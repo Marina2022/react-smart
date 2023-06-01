@@ -1,29 +1,30 @@
 const mockExperts = [
 
   {
-    success: true,
-    events: {
-      donates: [
-        {
-          id: "0x9eb1f646e2a388d4b525dbe5b6df272880574c9c8faf473027e465aef70ddc5a04000000",
-          _sender: "0xd4df3332781e3a7ef6555739b4db63197d2c60bd",
-          _expertId: "0",
-          _revardsAmount: "654",
-          _isVoteAdded: false,
-          blockNumber: "35096735",
-          blockTimestamp: "1683035402"
-        },
-      ],
-      enableMoneyBacks: [],
-      gotMoneyBacks: [],
-      transferDonationsToExperts: []
-    },
+    donates: [
+      {
+        id: "0x9eb1f646e2a388d4b525dbe5b6df272880574c9c8faf473027e465aef70ddc5a04000000",
+        _sender: "0xd4df3332781e3a7ef6555739b4db63197d2c60bd",
+        _expertId: "0",
+        _revardsAmount: "654",
+        _isVoteAdded: false,
+        blockNumber: "35096735",
+        blockTimestamp: "1683035402"
+      },
+    ],
+    enableMoneyBacks: [],
+    gotMoneyBacks: [],
+    transferDonationsToExperts: [],
     expert: {
+      address: null,
+      telegram: 'https://t.me/Marsitee',
+      instagram: null,
+      webSite: null,
+      twitter: null,
       id: 654654,
       name: "Ivan",
       image: "http://ec2-3-89-222-10.compute-1.amazonaws.com:8082/static/ff9abfb2b8ff8dd18c89bcad1b5f4923.jpeg",
       position: "Ivanov",
-      links: null,
       experience: "I am a blockchain technology specialist. I teach people the basics of blockchain technology. I explain everything in simple terms.",
       learnDescription: "Artificial intelligence for business",
       createdAt: "2023-05-14T07:26:35.050Z",
@@ -32,7 +33,7 @@ const mockExperts = [
   },
   {
     success: true,
-    events: {
+
       donates: [
         {
           id: "0x9eb1f646e2a388d4b525dbe5b6df272880574c9c8faf473027e465aef70ddc5a04000000",
@@ -55,9 +56,13 @@ const mockExperts = [
       ],
       enableMoneyBacks: [],
       gotMoneyBacks: [],
-      transferDonationsToExperts: []
-    },
+      transferDonationsToExperts: [],
     expert: {
+      address: null,
+      telegram: null,
+      instagram: null,
+      webSite: null,
+      twitter: null,
       id: 12863,
       name: "Igor",
       image: null,
@@ -72,7 +77,7 @@ const mockExperts = [
 
   {
     success: true,
-    events: {
+
       donates: [
         {
           id: "0x9eb1f646e2a388d4b525dbe5b6df272880574c9c8faf473027e465aef70ddc5a04000000",
@@ -95,9 +100,13 @@ const mockExperts = [
       ],
       enableMoneyBacks: [],
       gotMoneyBacks: [],
-      transferDonationsToExperts: []
-    },
+      transferDonationsToExperts: []    ,
     expert: {
+      address: null,
+      telegram: null,
+      instagram: null,
+      webSite: null,
+      twitter: null,
       id: 9433,
       name: "Elena",
       image: "http://ec2-3-89-222-10.compute-1.amazonaws.com:8082/static/d008d6df4fef08e6c495a62f8cdaa7fb.jpeg",
@@ -112,7 +121,7 @@ const mockExperts = [
 
   {
     success: true,
-    events: {
+
       donates: [
         {
           id: "0x9eb1f646e2a388d4b525dbe5b6df272880574c9c8faf473027e465aef70ddc5a04000000",
@@ -145,8 +154,13 @@ const mockExperts = [
       enableMoneyBacks: [],
       gotMoneyBacks: [],
       transferDonationsToExperts: []
-    },
+    ,
     expert: {
+      address: null,
+      telegram: null,
+      instagram: null,
+      webSite: null,
+      twitter: null,
       id: 232,
       name: "Gleb",
       image: null,
@@ -161,7 +175,7 @@ const mockExperts = [
 
   {
     success: true,
-    events: {
+
       donates: [
         {
           id: "0x9eb1f646e2a388d4b525dbe5b6df272880574c9c8faf473027e465aef70ddc5a04000000",
@@ -185,11 +199,15 @@ const mockExperts = [
       enableMoneyBacks: [],
       gotMoneyBacks: [],
       transferDonationsToExperts: []
-    },
+    ,
     expert: {
+      address: null,
+      telegram: null,
+      instagram: null,
+      webSite: null,
+      twitter: null,
       id: 5468,
       name: "Alex",
-      // image: "http://localhost:8082/static/e5cc54881ea0190d81e2888992ed9ac4.jpeg",
       image: null,
       position: "Smith",
       links: null,

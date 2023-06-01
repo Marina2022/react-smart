@@ -5,7 +5,7 @@ import Role from "../../pages/Role/Role";
 import EditExpertProfile from "../../pages/EditExpertProfile/EditExpertProfile";
 import ExpertProfile from "../../pages/ExpertProfile/ExpertProfile";
 import UserProfile from "../../pages/UserProfile/UserProfile";
-import {useAccount, useBalance, useNetwork} from "wagmi";
+import {useAccount, useBalance, useNetwork, useSwitchNetwork} from "wagmi";
 import {useEffect} from "react";
 import {selectConnectIsShown, selectWallet, setConnectIsShown, setWallet} from "../../../store/reducers/dataReducer";
 import {ethers} from "ethers";
@@ -23,8 +23,12 @@ const PageWrapper = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const {switchNetwork} = useSwitchNetwork()
+
   useEffect(() => {
+
     if (isConnected) {
+      switchNetwork(80001)
       dispatch(setWallet({
         number: address,
         balance: ethers.formatUnits(data.value, data.decimals).slice(0, -15),
