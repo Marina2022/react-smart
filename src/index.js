@@ -5,7 +5,7 @@ import {Provider} from 'react-redux';
 
 import App from './components/app/App';
 import rootReducer from './store/rootReducer';
-import {fetchExperts, setRoundData, setWallet} from './store/reducers/dataReducer';
+import {fetchExperts, fetchOtherData, setRoundData, setWallet} from './store/reducers/dataReducer';
 import {createAPI} from "./services/api";
 import BrowserHistoryRouter from "./components/browserHistoryRouter/browserHistoryRouter";
 import history from "./browserHistory";
@@ -18,6 +18,7 @@ export const store = configureStore({
 })
 
 store.dispatch(fetchExperts())
+store.dispatch(fetchOtherData())
 
 // будет потом подтягиваться санкой из АПИ
 store.dispatch(setRoundData({

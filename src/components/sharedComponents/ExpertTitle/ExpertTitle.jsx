@@ -12,26 +12,26 @@ const ExpertTitle = ({expert}) => {
       <div className={s.name}>{expert.name} {expert.position}</div>
       <ul className={s.socials}>
         <li>
-          <a href="#">
+          <a href={expert.telegram}>
             <img src={tg} alt="telegram icon"/>
           </a>
         </li>
 
         <li>
-          <a href="#">
+          <a href={expert.twitter}>
             <img src={twitter} alt="twitter icon"/>
           </a>
         </li>
 
         <li>
-          <a href="#">
+          <a href={expert.instagram}>
             <img src={web} alt="instagram icon"/>
           </a>
         </li>
 
         <li>
-          <a href="#">
-            <img src={insta} alt="telegram icon"/>
+          <a href={expert.instagram}>
+            <img src={insta} alt="instagram icon"/>
           </a>
         </li>
       </ul>

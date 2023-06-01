@@ -13,9 +13,21 @@ export const fetchExperts = createAsyncThunk('data/fetchExperts',
         }
       }
     );
-    console.log(data.data.data)
-
     return data.data.data;
+  })
+
+
+export const fetchOtherData = createAsyncThunk('data/fetchOtherData',
+  async () => {
+    const data = await api.post(APIRoutes.getOtherInfo, {}, {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': '74803c46-6f65-4aac-90b1-44d147938011'
+        }
+      }
+    );
+    console.log(data.data)
+    return data.data;
   })
 
 export const fetchOneExpert = createAsyncThunk('data/fetchOneExpert',
@@ -32,7 +44,9 @@ export const fetchOneExpert = createAsyncThunk('data/fetchOneExpert',
 
 export const sendExpert = createAsyncThunk('data/sendExpert',
   async ({sendData, file}) => {
+  //async ({sendData1, file}) => {
 
+    //const data = await api.post(APIRoutes.sendExpert, sendData, {
     const data = await api.post(APIRoutes.sendExpert, sendData, {
       headers: {
         'Content-Type': 'application/json',

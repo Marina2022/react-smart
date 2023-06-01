@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {
   selectCurrentExpert,
   selectCurrentExpertId,
-  selectFormIsSubmitting,
+  selectFormIsSubmitting, selectWallet,
   sendExpert
 } from "../../../store/reducers/dataReducer";
 import {useDispatch, useSelector} from "react-redux";
@@ -29,7 +29,10 @@ const EditExpertProfile = () => {
     }
   }, [])
 
-  const [isEdit, setIsEdit] = useState('true');
+  let walletaddress
+  const wallet = useSelector(selectWallet)
+if (wallet) walletaddress = wallet.number
+
   const refUser = useRef(null);
   const [file, setFile] = useState(null)
 
@@ -107,6 +110,11 @@ const EditExpertProfile = () => {
                     links: values.telegram + ' ' + values.instagram + ' ' + values.twitter + ' ' + values.website,
                     experience: values.experience,
                     learnDescription: values.courses,
+                    telegram: values.telegram,
+                    instagram: values.instagram,
+                    twitter: values.twitter,
+                    webSite: values.website,
+                    address: walletaddress
                   }
                 }
                 dispatch(sendExpert({sendData, file}))
