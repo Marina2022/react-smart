@@ -39,26 +39,28 @@ const PageWrapper = () => {
     abi: MainContract_abi,
     functionName: 'register',
   });
-  const { write } = useContractWrite(config)
+  const {write} = useContractWrite(config)
 
+  let showButton = true   // показывать ли кнопку регистрации
 
-  const { isRegistered } = useContractRead({
+  const {isRegistered} = useContractRead({
     address: CONTRACT_ADDRESS,
     abi: MainContract_abi,
     functionName: 'isUserRegistered',
-    args:[address],
+    args: [address],
     onError(error) {
       console.log('Ошибка', error)
     },
     onSuccess(data) {
       console.log('Юзер зареган:', data)
+      showButton = false  // кнопку больше не показыаем
     },
   })
-  
 
   useEffect(() => {
     if (isConnected) {
       if (switchNetwork) switchNetwork(80001)
+      if (isRegistered) isRegistered()  // вызываем функцию (если хук useContractRead успел отработать и функция есть)
 
       dispatch(setWallet({
         number: address,
@@ -74,11 +76,11 @@ const PageWrapper = () => {
 
   return (
     <>
-      {!isRegistered && <button
+      {showButton && isConnected && <button
         onClick={() => write()}
-          style={{'padding' : 20, 'border': '2px red solid', 'position': 'absolute', 'right': 200}}
+        style={{'padding': 20, 'border': '2px red solid', 'position': 'absolute', 'right': 180}}
 
-      >write</button>}
+      >Register</button>}
       <Header/>
       <Routes>
         <Route path={'/'} element={<MainPage/>}/>
