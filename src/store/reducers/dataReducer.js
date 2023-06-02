@@ -27,7 +27,7 @@ export const fetchOtherData = createAsyncThunk('data/fetchOtherData',
         }
       }
     );
-    console.log(data.data)
+    // console.log(data.data)
     return data.data;
   })
 
@@ -127,7 +127,7 @@ const dataReducer = createSlice({
     .addCase(fetchExperts.fulfilled, (state, action) => {
       state.experts = action.payload
       state.isLoading = false
-      console.log(action.payload)
+      // console.log(action.payload)
     })
     .addCase(fetchExperts.rejected, (state, action) => {
       console.log('experts fetching error ')

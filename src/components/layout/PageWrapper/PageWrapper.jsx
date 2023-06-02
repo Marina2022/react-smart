@@ -28,7 +28,7 @@ const PageWrapper = () => {
   useEffect(() => {
 
     if (isConnected) {
-      switchNetwork(80001)
+      if (switchNetwork) switchNetwork(80001)
       dispatch(setWallet({
         number: address,
         balance: ethers.formatUnits(data.value, data.decimals).slice(0, -15),
