@@ -31,7 +31,7 @@ const DonateButton = ({expert, classname, bonus}) => {
       >
 
         <button className={cn(s.cellButton, classname)}
-                disabled={!wallet || roundStatus !== 1 || expert.isDonated === true}
+                disabled={!wallet || roundStatus !== 1 || expert.isVoted === true}
                 onClick={onDonateClick}
         >Donate
         </button>

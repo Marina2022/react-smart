@@ -42,7 +42,7 @@ const ExpertProfile = () => {
       <div className={s.container}>
         <div className={s.mainBlock}>
           <div className={s.leftBlock}>
-            <img className={s.avatar} src={currentExpert.expert.image} alt="avatar"/>
+            <img className={s.avatar} src={currentExpert.expert.image ? currentExpert.expert.image : ''} alt="avatar"/>
             {currentId && <button className={s.editBtn} onClick={onEditClick}>Edit profile</button>}
             <ShareProfile classname={s.shareProfile}/>
           </div>

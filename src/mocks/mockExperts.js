@@ -46,7 +46,7 @@ const mockExperts = [
         },
         {
           id: "0x9eb1f646e2a388d4b525dbe5b6df272880574c9c8faf473027e465aef70ddc5a04000001",
-          _sender: "0xd4df3332781e3a7ef6555739b4db6319sdfsdfsd2c60bd",
+          _sender: "0x4cE1F872FC453C0C7f23eD43D1279f426F45Fa42",
           _expertId: "12863",
           _revardsAmount: "36",
           _isVoteAdded: false,
@@ -201,15 +201,15 @@ const mockExperts = [
       transferDonationsToExperts: []
     ,
     expert: {
-      address: null,
+      address: '0x4cE1F872FC453C0C7f23eD43D1279f426F45Fa42',
       telegram: null,
       instagram: null,
       webSite: null,
       twitter: null,
       id: 5468,
-      name: "Alex",
+      name: "Marina",
       image: null,
-      position: "Smith",
+      position: "I",
       links: null,
       experience: "Fort Knox — “The Depository is protected by layers of physical security, alarms, video cameras, microphones, mine fields, ba",
       learnDescription: "NFT beauty",
