@@ -34,7 +34,6 @@ const wagmiConfig = createConfig({
 const ethereumClient = new EthereumClient(wagmiConfig, chains)
 
 function App() {
-
   return (
     <>
       <WagmiConfig config={wagmiConfig}>

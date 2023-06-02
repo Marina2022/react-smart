@@ -46,7 +46,15 @@ const PageWrapper = () => {
     address: CONTRACT_ADDRESS,
     abi: MainContract_abi,
     functionName: 'isUserRegistered',
+    args:[address],
+    onError(error) {
+      console.log('Ошибка', error)
+    },
+    onSuccess(data) {
+      console.log('Юзер зареган:', data)
+    },
   })
+  
 
   useEffect(() => {
     if (isConnected) {
