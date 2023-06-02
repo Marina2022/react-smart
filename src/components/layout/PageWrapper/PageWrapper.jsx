@@ -14,7 +14,7 @@ import {
   usePrepareContractWrite,
   useSwitchNetwork
 } from "wagmi";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {selectConnectIsShown, selectWallet, setConnectIsShown, setWallet} from "../../../store/reducers/dataReducer";
 import {ethers} from "ethers";
 import {useDispatch, useSelector} from "react-redux";
@@ -41,7 +41,7 @@ const PageWrapper = () => {
   });
   const {write} = useContractWrite(config)
 
-  let showButton = true   // показывать ли кнопку регистрации
+    const [showButton, setShowButton] = useState(true)
 
   const {isRegistered} = useContractRead({
     address: CONTRACT_ADDRESS,
@@ -53,7 +53,7 @@ const PageWrapper = () => {
     },
     onSuccess(data) {
       console.log('Юзер зареган:', data)
-      showButton = false  // кнопку больше не показыаем
+      setShowButton(!data)  // кнопку больше не показываем
     },
   })
 
