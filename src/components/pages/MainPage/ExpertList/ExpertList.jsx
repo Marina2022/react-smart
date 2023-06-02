@@ -6,6 +6,12 @@ import Clock from "./Clock/Clock";
 
 const ExpertList = () => {
   const experts = useSelector(selectExperts);
+
+  const globalDonatesNumber = experts.reduce((sum, elem) => {
+    return sum + elem.donates.length
+  }, 0)
+
+
   return (
     <div className={s.expertsBlock}>
       <h2 className={s.expertsTitle}>Donate to your favorite expert</h2>
@@ -26,7 +32,7 @@ const ExpertList = () => {
       <ul>
         {
           experts.map((expert, index)=>{
-            return <ExpertListItem expert={expert} key={index} number={index+1} />
+            return <ExpertListItem expert={expert} key={index} number={index+1} globalDonatesNumber={globalDonatesNumber} />
           })
         }
       </ul>
