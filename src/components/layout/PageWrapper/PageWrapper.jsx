@@ -41,7 +41,7 @@ const PageWrapper = () => {
   });
   const {write} = useContractWrite(config)
 
-    const [showButton, setShowButton] = useState(true)
+    const [showButton, setShowButton] = useState(false)
 
   const {isRegistered} = useContractRead({
     address: CONTRACT_ADDRESS,
