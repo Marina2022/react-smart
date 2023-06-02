@@ -16,7 +16,7 @@ const mockExperts = [
     gotMoneyBacks: [],
     transferDonationsToExperts: [],
     expert: {
-      address: null,
+      address: '0x76c89EC523F82e5457f681f8184cd2FFD895B8Cf',
       telegram: 'https://t.me/Marsitee',
       instagram: null,
       webSite: null,

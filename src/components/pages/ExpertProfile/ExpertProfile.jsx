@@ -38,7 +38,7 @@ const ExpertProfile = () => {
     strokeColor="#4481c3"/></div>
 
   return (
-    currentExpert && <div>
+    currentExpert === id && <div>
       <div className={s.container}>
         <div className={s.mainBlock}>
           <div className={s.leftBlock}>

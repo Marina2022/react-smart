@@ -5,11 +5,20 @@ import Role from "../../pages/Role/Role";
 import EditExpertProfile from "../../pages/EditExpertProfile/EditExpertProfile";
 import ExpertProfile from "../../pages/ExpertProfile/ExpertProfile";
 import UserProfile from "../../pages/UserProfile/UserProfile";
-import {useAccount, useBalance, useNetwork, useSwitchNetwork} from "wagmi";
+import {
+  useAccount,
+  useBalance,
+  useContractRead,
+  useContractWrite,
+  useNetwork,
+  usePrepareContractWrite,
+  useSwitchNetwork
+} from "wagmi";
 import {useEffect} from "react";
 import {selectConnectIsShown, selectWallet, setConnectIsShown, setWallet} from "../../../store/reducers/dataReducer";
 import {ethers} from "ethers";
 import {useDispatch, useSelector} from "react-redux";
+import {CONTRACT_ADDRESS, MainContract_abi} from "../../../consts";
 
 const PageWrapper = () => {
 
@@ -25,10 +34,24 @@ const PageWrapper = () => {
 
   const {switchNetwork} = useSwitchNetwork()
 
-  useEffect(() => {
+  const {config, error} = usePrepareContractWrite({
+    address: CONTRACT_ADDRESS,
+    abi: MainContract_abi,
+    functionName: 'register',
+  });
+  const { write } = useContractWrite(config)
 
+
+  const { isRegistered } = useContractRead({
+    address: CONTRACT_ADDRESS,
+    abi: MainContract_abi,
+    functionName: 'isUserRegistered',
+  })
+
+  useEffect(() => {
     if (isConnected) {
       if (switchNetwork) switchNetwork(80001)
+
       dispatch(setWallet({
         number: address,
         balance: ethers.formatUnits(data.value, data.decimals).slice(0, -15),
@@ -39,11 +62,15 @@ const PageWrapper = () => {
         navigate('role')
       }
     }
-
   }, [isConnected])
 
   return (
     <>
+      {!isRegistered && <button
+        onClick={() => write()}
+          style={{'padding' : 20, 'border': '2px red solid', 'position': 'absolute', 'right': 200}}
+
+      >write</button>}
       <Header/>
       <Routes>
         <Route path={'/'} element={<MainPage/>}/>

@@ -66,7 +66,7 @@ const TopProfileModal = ({profileModalIsShown, setProfileModalIsShown, classname
             <span className={s.walletNumber}>{walletNumber}</span>
             <img src={greenRound} alt="icon"/>
           </div>
-          <button onClick={onOffClick}><img src={onBtn} alt="button"/></button>
+          <button onClick={onOffClick}><img src={onBtn} alt="button" className={s.offBtn}/></button>
         </div>
         <div className={s.bottomWrapper}>
           <div className={s.balance}>
