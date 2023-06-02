@@ -9,6 +9,7 @@ import greenRound from '../../../../assets/wallet-green-round.svg'
 import onBtn from '../../../../assets/onBtn.svg'
 import WithdrawBtn from "../../../smartContractComponents/WithdrawBtn/WithdrawBtn";
 import {selectCurrentExpertId, selectRole, selectRound, selectWallet} from "../../../../store/reducers/dataReducer";
+import {useDisconnect} from "wagmi";
 
 const TopProfileModal = ({profileModalIsShown, setProfileModalIsShown, classname, walletNumber}) => {
   const wallet = useSelector(selectWallet);
@@ -31,6 +32,16 @@ const TopProfileModal = ({profileModalIsShown, setProfileModalIsShown, classname
       setProfileModalIsShown(false);
   }
 
+
+  const {disconnect} = useDisconnect()
+
+  const onOffClick = () => {
+    navigate('/')
+    disconnect()
+    window.location.reload()
+
+  }
+
   useEffect(() => {
     document.addEventListener('keydown', onKeydown)
     return () => document.removeEventListener('keydown', onKeydown)
@@ -49,13 +60,13 @@ const TopProfileModal = ({profileModalIsShown, setProfileModalIsShown, classname
         <div className={s.walletWrapper}>
           <div className={s.balance}>
             <div className={s.balanceName}>Balance</div>
-            <div className={s.balanceValue}>{wallet.balance ? wallet.balance: '0'} Matic</div>
+            <div className={s.balanceValue}>{wallet.balance ? wallet.balance : '0'} Matic</div>
           </div>
           <div className={s.walletNumberWrapper}>
             <span className={s.walletNumber}>{walletNumber}</span>
             <img src={greenRound} alt="icon"/>
           </div>
-          <button><img src={onBtn} alt="button"/></button>
+          <button onClick={onOffClick}><img src={onBtn} alt="button"/></button>
         </div>
         <div className={s.bottomWrapper}>
           <div className={s.balance}>
