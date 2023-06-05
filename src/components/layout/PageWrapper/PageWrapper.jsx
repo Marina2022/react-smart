@@ -130,7 +130,6 @@ const PageWrapper = () => {
         style={{'padding': 20, 'border': '2px red solid', 'position': 'absolute', 'right': 180, 'top': 10, 'borderRadius': 15, 'backgroundColor':'#fff'}}
       >Register</button>}
 
-
       {/*теперь донатим по кнопке Donate - в списке экспертов*/}
 
       {/*{isUserRegistered && <button*/}
