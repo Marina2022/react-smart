@@ -8,24 +8,30 @@ const ApprovePaymentBtn = ({step, setStep, expertId}) => {
 
   const donateInputValue = useSelector(selectDonateInputValue)
 
-  const { data: approveData, isLoading: isLoadApprove, isSuccess: isSuccessApprove, write: approveUsdt} = useContractWrite({
+  const {
+    data: approveData,
+    isLoading: isLoadApprove,
+    isSuccess: isSuccessApprove,
+    write: approveUsdt
+  } = useContractWrite({
     address: USDT_ADDRESS,
     abi: USDT_abi,
     functionName: 'approve',
-    args: [CONTRACT_ADDRESS, donateInputValue*10**18] // donateInputValue - сумма которую пользователь в инпут ввел
+    args: [CONTRACT_ADDRESS, donateInputValue * 10 ** 18], // donateInputValue - сумма которую пользователь в инпут ввел
+    onSuccess(data) {
+      setStep(2)    // т.е. перейдет на след. шаг, если аппрув удался
+    }
   })
 
-  const onApprovePayment = ()=>{  // обработчик клика на кнопку Approve
-    if (donateInputValue ==='') return
+  const onApprovePayment = () => {  // обработчик клика на кнопку Approve
+    if (donateInputValue === '') return
     approveUsdt()
-
-    if (isSuccessApprove) setStep(2);  // т.е. перейдет на след. шаг, если аппрув удался
   }
 
   return (
     <button
       className={s.connectBtn} disabled={step === 2}
-    onClick={onApprovePayment}
+      onClick={onApprovePayment}
     >Approve</button>
   );
 };

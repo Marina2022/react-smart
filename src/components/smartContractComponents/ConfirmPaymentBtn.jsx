@@ -19,15 +19,16 @@ const ConfirmPaymentBtn = ({step, setStep, expertId}) => {
     address: CONTRACT_ADDRESS,
     abi: MainContract_abi,
     functionName: 'donateInUSDT',
-    args: [expertId, donateInputValue * 10 ** 18]
+    args: [expertId, donateInputValue * 10 ** 18],
+    onSuccess(data) {
+      // не уверена, правильно ли делаю. В общем,это нужно сделать при успешном донате:
+      setStep(3)
+      dispatch(setIsVoted(expertId))
+    }
   })
 
   const onConfirmPaymentClick = () => {   // обработчик клика по кнопке Confirm
     donateInUsdt()
-    if (isSuccessDonate) { // если донат успешно произведен
-      setStep(3)
-      dispatch(setIsVoted(expertId))
-    }
   }
 
   return (
