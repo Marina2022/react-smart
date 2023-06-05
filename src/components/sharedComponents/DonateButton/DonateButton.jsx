@@ -1,16 +1,25 @@
 import s from './DonateButton.module.scss'
 import cn from "classnames";
 import {useSelector} from "react-redux";
-import {selectRound, selectWallet} from "../../../store/reducers/dataReducer";
+import {
+  selectDonateInputValue,
+  selectIsUserRegistered,
+  selectRound,
+  selectWallet
+} from "../../../store/reducers/dataReducer";
 import {useState} from "react";
 import DonateModal from "./DonateModal/DonateModal";
 
 const DonateButton = ({expert, classname, bonus}) => {
 
+  const donateInputValue = useSelector(selectDonateInputValue)
   const wallet = useSelector(selectWallet);
   const roundStatus = useSelector(selectRound).status;
   const [isDonateModalShown, setIsDonateModalShown] = useState(false);
   const [isTooltipShown, setIsTooltipShown] = useState(false);
+
+  const isUserRegistered = useSelector(selectIsUserRegistered) // берем из редакса значение - зареган или нет
+
 
   const showTooltip = () => {
     setIsTooltipShown(true);
@@ -31,15 +40,22 @@ const DonateButton = ({expert, classname, bonus}) => {
       >
 
         <button className={cn(s.cellButton, classname)}
-                disabled={!wallet || roundStatus !== 1 || expert.isVoted === true}
+                disabled={!wallet || roundStatus !== 1 || expert.isVoted === true || !isUserRegistered}
                 onClick={onDonateClick}
         >Donate
         </button>
 
         {
-          (!wallet || roundStatus !== 1) && isTooltipShown &&
+          (!wallet ) && isTooltipShown &&
           <div className={s.tooltip}>Connect your wallet for donate</div>
         }
+
+        {
+          (!isUserRegistered ) && isTooltipShown &&
+          <div className={s.tooltip}>Register for donate</div>
+        }
+
+
 
       </div>
 

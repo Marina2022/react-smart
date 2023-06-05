@@ -15,7 +15,13 @@ import {
   useSwitchNetwork
 } from "wagmi";
 import {useEffect, useState} from "react";
-import {selectConnectIsShown, selectWallet, setConnectIsShown, setWallet} from "../../../store/reducers/dataReducer";
+import {
+  selectConnectIsShown, selectIsUserRegistered,
+  selectWallet,
+  setConnectIsShown,
+  setIsUserRegistered,
+  setWallet
+} from "../../../store/reducers/dataReducer";
 import {ethers} from "ethers";
 import {useDispatch, useSelector} from "react-redux";
 import {CONTRACT_ADDRESS, MainContract_abi, USDT_ADDRESS, USDT_abi} from "../../../consts";
@@ -43,35 +49,45 @@ const PageWrapper = () => {
   const {write: register} = useContractWrite(registerConfig)
 
   // не получилось сделать как выше, поэтому сделал вот так, так тоже сразу можно, но будет дольше транза готовиться, тк конфиг сосздается в момент нажатия
-  const { data: approveData, isLoading: isLoadApprove, isSuccess: isSuccessApprove, write: approveUsdt} = useContractWrite({
+  const {
+    data: approveData,
+    isLoading: isLoadApprove,
+    isSuccess: isSuccessApprove,
+    write: approveUsdt
+  } = useContractWrite({
     address: USDT_ADDRESS,
     abi: USDT_abi,
     functionName: 'approve',
     args: [CONTRACT_ADDRESS, 0] // вместо нуля надо сумму которую пользователь хочет задонатить
   })
 
-  const { data: DonateData, isLoading: isLoadDonate, isSuccess: isSuccessDonate, write: donateInUsdt} = useContractWrite({
+  const {
+    data: DonateData,
+    isLoading: isLoadDonate,
+    isSuccess: isSuccessDonate,
+    write: donateInUsdt
+  } = useContractWrite({
     address: CONTRACT_ADDRESS,
     abi: MainContract_abi,
     functionName: 'donateInUSDT',
-    args: [0,1*10**18] //аналогично, но тут пока 1 токен донатится и id эксперта 0
+    args: [0, 1 * 10 ** 18] //аналогично, но тут пока 1 токен донатится и id эксперта 0
   })
-  const { data: ApprovalData, isError: readApproveError, isLoading: isLoadingApprovalRead } = useContractRead({ //вот эта штука смотрит сколько approve в токенах
+
+  const {data: ApprovalData, isError: readApproveError, isLoading: isLoadingApprovalRead} = useContractRead({ //вот эта штука смотрит сколько approve в токенах
     address: USDT_ADDRESS,
     abi: USDT_abi,
     functionName: 'allowance',
-    args: [address,CONTRACT_ADDRESS]
+    args: [address, CONTRACT_ADDRESS]
   })
   console.log(ApprovalData)
-  
-  if(isSuccessDonate) console.log('Задоначено')
-  if(isLoadDonate) console.log('донат производится...')
-  
-  //
-  
 
-    const [showButton, setShowButton] = useState(false)
-  
+
+  if (isSuccessDonate) console.log('Задоначено')
+  if (isLoadDonate) console.log('донат производится...')
+  //
+
+  const isUserRegistered = useSelector(selectIsUserRegistered) // берем из редакса значение - зареган или нет
+
   const {isRegistered} = useContractRead({
     address: CONTRACT_ADDRESS,
     abi: MainContract_abi,
@@ -82,43 +98,50 @@ const PageWrapper = () => {
     },
     onSuccess(data) {
       console.log('Юзер зареган:', data)
-      setShowButton(!data)  // кнопку больше не показываем
+      dispatch(setIsUserRegistered(data))
+      // setShowButton(!data)  // - теперь показ кнопок зависит от значения isUserRegistered из редакса
     },
   })
 
   useEffect(() => {
     if (isConnected) {
+      console.log('is connected')
       if (switchNetwork) switchNetwork(80001)
       if (isRegistered) isRegistered()  // вызываем функцию (если хук useContractRead успел отработать и функция есть)
 
-      dispatch(setWallet({
-        number: address,
-        balance: ethers.formatUnits(data.value, data.decimals).slice(0, -15),
-        donated: null
-      }))
+
+      if (data) {  // почему-то ошибка вылетает иногда, что data - undefined.
+        dispatch(setWallet({
+          number: address,
+          balance: ethers.formatUnits(data.value, data.decimals).slice(0, -15),
+        }))
+      }
       if (connectModalIsShown) {
         dispatch(setConnectIsShown(false));
         navigate('role')
       }
     }
-  }, [isConnected])
+  }, [isConnected, data])
 
   return (
     <>
-      {showButton && isConnected && <button
+      {!isUserRegistered && isConnected && <button
         onClick={() => register()}
-        style={{'padding': 20, 'border': '2px red solid', 'position': 'absolute', 'right': 180}}
+        style={{'padding': 20, 'border': '2px red solid', 'position': 'absolute', 'right': 180, 'top': 10, 'borderRadius': 15, 'backgroundColor':'#fff'}}
       >Register</button>}
 
-      {!showButton && <button
-        onClick={() => approveUsdt()}
-        style={{'padding': 20, 'border': '2px green solid', 'position': 'absolute', 'right': 180}}
-      >Approve</button>}
 
-      {!showButton && <button
-        onClick={() => donateInUsdt()}
-        style={{'padding': 20, 'border': '2px pink solid', 'position': 'absolute', 'right': 180, "marginRight": 120}}
-      >Donate</button>}
+      {/*теперь донатим по кнопке Donate - в списке экспертов*/}
+
+      {/*{isUserRegistered && <button*/}
+      {/*  onClick={() => approveUsdt()}*/}
+      {/*  style={{'padding': 20, 'border': '2px green solid', 'position': 'absolute', 'right': 180}}*/}
+      {/*>Approve</button>}*/}
+
+      {/*{isUserRegistered && <button*/}
+      {/*  onClick={() => donateInUsdt()}*/}
+      {/*  style={{'padding': 20, 'border': '2px pink solid', 'position': 'absolute', 'right': 180, "marginRight": 120}}*/}
+      {/*>Donate</button>}*/}
 
 
       <Header/>

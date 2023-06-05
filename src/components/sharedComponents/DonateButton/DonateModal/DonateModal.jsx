@@ -3,8 +3,8 @@ import closeBtn from '../../../../assets/closeConnect.svg'
 import {useEffect, useState} from "react";
 
 import greyRound from '../../../../assets/grey-round.svg'
-import {useSelector} from "react-redux";
-import {selectWallet} from "../../../../store/reducers/dataReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {selectDonateInputValue, selectWallet, setDonateInputValue} from "../../../../store/reducers/dataReducer";
 import ApprovePaymentBtn from "../../../smartContractComponents/ApprovePaymentBtn";
 import ConfirmPaymentBtn from "../../../smartContractComponents/ConfirmPaymentBtn";
 import one from "../../../../assets/progress/one.svg";
@@ -14,6 +14,15 @@ import twoActive from "../../../../assets/progress/two-active.svg";
 
 
 const DonateModal = ({expert, isDonateModalShown, setIsDonateModalShown, bonus}) => {
+
+  const dispatch = useDispatch()
+
+  const donateInputValue = useSelector(selectDonateInputValue)
+
+  const onPayInputChange = (e) => {
+    dispatch(setDonateInputValue(e.target.value))
+  }
+
   const onKeydown = (e) => {
     if (e.key === 'Escape') {
       setIsDonateModalShown(false)
@@ -32,6 +41,7 @@ const DonateModal = ({expert, isDonateModalShown, setIsDonateModalShown, bonus})
   const onClose = () => {
     setIsDonateModalShown(false);
     setStep(1);
+    dispatch(setDonateInputValue(''))
   }
   return (
     isDonateModalShown && <div>
@@ -49,7 +59,8 @@ const DonateModal = ({expert, isDonateModalShown, setIsDonateModalShown, bonus})
             <p className={s.youVote}>You vote for {expert.expert.name + ' ' + expert.expert.position}</p>
             <div className={s.youPay}>
               <span>You pay</span>
-              <span>$12</span>
+              <input onChange={onPayInputChange} type="text" placeholder="$" className={s.payInput} value={donateInputValue}/>
+
             </div>
             <div className={s.textQuadr}>
               <span>Quadratic</span>
@@ -59,11 +70,11 @@ const DonateModal = ({expert, isDonateModalShown, setIsDonateModalShown, bonus})
 
             <div className={s.text}>
               <span>Balance</span>
-              <div className={s.bonusWrapper}><span>${wallet.balance.data}</span></div>
+              <div className={s.bonusWrapper}><span>${wallet.balance === '' ? '0' : wallet.balance}</span></div>
             </div>
             <div className={s.buttonWrapper}>
-              <ApprovePaymentBtn step={step} setStep={setStep}/>
-              <ConfirmPaymentBtn step={step} setStep={setStep} expert={expert}/>
+              <ApprovePaymentBtn step={step} setStep={setStep} expertId={expert.expert.id} />
+              <ConfirmPaymentBtn step={step} setStep={setStep} expertId={expert.expert.id}/>
             </div>
 
             <div className={s.progress}>

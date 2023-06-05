@@ -145,3 +145,15 @@
   color: #CB00DD;
   margin: 0 auto;
 }
+
+.payInput {
+  width: 70px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px 0;
+  text-align: center;
+
+  &:focus {
+    outline: 1px solid #777;
+  }
+}

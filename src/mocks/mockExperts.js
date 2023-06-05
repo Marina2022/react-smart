@@ -201,7 +201,8 @@ const mockExperts = [
       transferDonationsToExperts: []
     ,
     expert: {
-      address: '0x4cE1F872FC453C0C7f23eD43D1279f426F45Fa42',
+      // address: '0x4cE1F872FC453C0C7f23eD43D1279f426F45Fa42',  // мой кошелек
+      address: '0x4cE1F872FC453C0C7f23eD43D1279f426F45Fa41',
       telegram: null,
       instagram: null,
       webSite: null,

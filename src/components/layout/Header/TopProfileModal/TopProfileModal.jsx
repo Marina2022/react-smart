@@ -8,7 +8,13 @@ import profileBtn from '../../../../assets/profile-link.svg'
 import greenRound from '../../../../assets/wallet-green-round.svg'
 import onBtn from '../../../../assets/onBtn.svg'
 import WithdrawBtn from "../../../smartContractComponents/WithdrawBtn/WithdrawBtn";
-import {selectCurrentExpertId, selectRole, selectRound, selectWallet} from "../../../../store/reducers/dataReducer";
+import {
+  selectCurrentExpertId,
+  selectRole,
+  selectRound,
+  selectSuccessfullyDonated,
+  selectWallet
+} from "../../../../store/reducers/dataReducer";
 import {useDisconnect} from "wagmi";
 
 const TopProfileModal = ({profileModalIsShown, setProfileModalIsShown, classname, walletNumber}) => {
@@ -47,6 +53,8 @@ const TopProfileModal = ({profileModalIsShown, setProfileModalIsShown, classname
     return () => document.removeEventListener('keydown', onKeydown)
   }, [])
 
+  const successfullyDonated = useSelector(selectSuccessfullyDonated);
+
   return (
     wallet && profileModalIsShown && <div className={classname}>
       <div className="overlayTransparent" onClick={() => setProfileModalIsShown(false)}></div>
@@ -71,7 +79,7 @@ const TopProfileModal = ({profileModalIsShown, setProfileModalIsShown, classname
         <div className={s.bottomWrapper}>
           <div className={s.balance}>
             <div className={s.balanceName}>Donated</div>
-            <div className={s.balanceValue}>{wallet.donated} Matic</div>
+            <div className={s.balanceValue}>{successfullyDonated ? successfullyDonated : '0'} Matic</div>
           </div>
           <WithdrawBtn classname={s.withDraw}/>
         </div>

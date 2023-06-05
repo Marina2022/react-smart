@@ -1,12 +1,18 @@
 import s from './UserProfile.module.scss'
 import {useDispatch, useSelector} from "react-redux";
-import {selectWallet, setUserRole} from "../../../store/reducers/dataReducer";
+import {
+  selectDonateInputValue,
+  selectSuccessfullyDonated,
+  selectWallet,
+  setUserRole
+} from "../../../store/reducers/dataReducer";
 import WithdrawBtn from "../../smartContractComponents/WithdrawBtn/WithdrawBtn";
 import {useState} from "react";
 import UserProfileModal from "./UserProfileModal/UserProfileModal";
 
 const UserProfile = () => {
   const wallet = useSelector(selectWallet);
+  const successfullyDonated = useSelector(selectSuccessfullyDonated);
   const [isModalActive, setIsModalActive] = useState(false);
   const dispatch = useDispatch()
 
@@ -16,14 +22,14 @@ const UserProfile = () => {
   }
 
   return (
-    wallet && <div className={s.container}>
+    <div className={s.container}>
       <div className={s.contentWrapper}>
         <div className={s.mainContent}>
-          {wallet.donated === 0 ?
+          {successfullyDonated === '' ?
             <h1 className={s.donated}>0 tokens donated</h1> :
-            <h1 className={s.donated}>{wallet.donated ? wallet.donated: '0'} Matic donated</h1>
+            <h1 className={s.donated}>{successfullyDonated ? successfullyDonated : '0'} Matic donated</h1>
           }
-          <WithdrawBtn disabled={wallet.donated === 0}/>
+          <WithdrawBtn disabled={!successfullyDonated}/>
           <p className={s.text}>You can withdraw your tokens if the Expert fails to fulfill its obligations.</p>
         </div>
         <div>
