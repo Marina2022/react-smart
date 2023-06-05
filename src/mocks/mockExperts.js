@@ -21,7 +21,7 @@ const mockExperts = [
       instagram: null,
       webSite: null,
       twitter: null,
-      id: 654654,
+      id: 0,
       name: "Ivan",
       image: "http://ec2-3-89-222-10.compute-1.amazonaws.com:8082/static/ff9abfb2b8ff8dd18c89bcad1b5f4923.jpeg",
       position: "Ivanov",
