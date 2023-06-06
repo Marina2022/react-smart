@@ -30,7 +30,7 @@ const PageWrapper = () => {
 
   const {address, isConnected} = useAccount()
 
-  const {data, isError, isLoading} = useBalance({
+  const {data: nativeBalance, isError, isLoading} = useBalance({
     address: address,
   })
 
@@ -79,7 +79,6 @@ const PageWrapper = () => {
     functionName: 'allowance',
     args: [address, CONTRACT_ADDRESS]
   })
-  console.log(ApprovalData)
 
 
   if (isSuccessDonate) console.log('Задоначено')
@@ -103,6 +102,22 @@ const PageWrapper = () => {
     },
   })
 
+  const { data: usdtBalance} = useContractRead({
+    address: USDT_ADDRESS,
+    abi: USDT_abi,
+    functionName: 'balanceOf',
+    args: [address],
+    onError(error) {
+      console.log('Ошибка', error)
+    },
+    onSuccess(data) {
+      console.log('Usdt balance:', data)
+    },
+  })
+
+  
+
+  
   useEffect(() => {
     if (isConnected) {
       console.log('is connected')
@@ -110,10 +125,11 @@ const PageWrapper = () => {
       if (isRegistered) isRegistered()  // вызываем функцию (если хук useContractRead успел отработать и функция есть)
 
 
-      if (data) {  // почему-то ошибка вылетает иногда, что data - undefined.
+      if (nativeBalance) {  // почему-то ошибка вылетает иногда, что data - undefined.
         dispatch(setWallet({
           number: address,
-          balance: ethers.formatUnits(data.value, data.decimals).slice(0, -15),
+          balance: ethers.formatUnits(nativeBalance.value, nativeBalance.decimals).slice(0, -15),
+          USDT_balance: ethers.formatUnits(usdtBalance, 18).slice(0, -15),
         }))
       }
       if (connectModalIsShown) {
@@ -121,7 +137,7 @@ const PageWrapper = () => {
         navigate('role')
       }
     }
-  }, [isConnected, data])
+  }, [isConnected, nativeBalance])
 
   return (
     <>
