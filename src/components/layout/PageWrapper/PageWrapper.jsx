@@ -49,9 +49,6 @@ const PageWrapper = () => {
   });
 
 
-  //const {write: register} = useContractWrite(registerConfig)
-
-
   const {data: regData, write: register} = useContractWrite(registerConfig)
   const waitForTransaction = useWaitForTransaction({
     hash: regData?.hash,
@@ -63,43 +60,6 @@ const PageWrapper = () => {
       console.log('Error', error)
     },
   })
-
-  // не получилось сделать как выше, поэтому сделал вот так, так тоже сразу можно, но будет дольше транза готовиться, тк конфиг сосздается в момент нажатия
-  // const {
-  //   data: approveData,
-  //   isLoading: isLoadApprove,
-  //   isSuccess: isSuccessApprove,
-  //   write: approveUsdt
-  // } = useContractWrite({
-  //   address: USDT_ADDRESS,
-  //   abi: USDT_abi,
-  //   functionName: 'approve',
-  //   args: [CONTRACT_ADDRESS, 0] // вместо нуля надо сумму которую пользователь хочет задонатить
-  // })
-  //
-  // const {
-  //   data: DonateData,
-  //   isLoading: isLoadDonate,
-  //   isSuccess: isSuccessDonate,
-  //   write: donateInUsdt
-  // } = useContractWrite({
-  //   address: CONTRACT_ADDRESS,
-  //   abi: MainContract_abi,
-  //   functionName: 'donateInUSDT',
-  //   args: [0, 1 * 10 ** 18] //аналогично, но тут пока 1 токен донатится и id эксперта 0
-  // })
-  //
-  // const {data: ApprovalData, isError: readApproveError, isLoading: isLoadingApprovalRead} = useContractRead({ //вот эта штука смотрит сколько approve в токенах
-  //   address: USDT_ADDRESS,
-  //   abi: USDT_abi,
-  //   functionName: 'allowance',
-  //   args: [address, CONTRACT_ADDRESS]
-  // })
-
-
-  // if (isSuccessDonate) console.log('Задоначено')
-  // if (isLoadDonate) console.log('донат производится...')
-  //
 
   const isUserRegistered = useSelector(selectIsUserRegistered) // берем из редакса значение - зареган или нет
 
