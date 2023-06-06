@@ -14,6 +14,7 @@ import {
   usePrepareContractWrite,
   useSwitchNetwork
 } from "wagmi";
+import {useWaitForTransaction,} from 'wagmi'
 import {useEffect, useState} from "react";
 import {
   selectConnectIsShown, selectIsUserRegistered,
@@ -30,7 +31,7 @@ const PageWrapper = () => {
 
   const {address, isConnected} = useAccount()
 
-  const {data, isError, isLoading} = useBalance({
+  const {data: nativeBalance, isError, isLoading} = useBalance({
     address: address,
   })
 
@@ -47,44 +48,57 @@ const PageWrapper = () => {
 
   });
 
-  const {write: register} = useContractWrite(registerConfig)
+
+  //const {write: register} = useContractWrite(registerConfig)
+
+
+  const {data: regData, write: register} = useContractWrite(registerConfig)
+  const waitForTransaction = useWaitForTransaction({
+    hash: regData?.hash,
+    onSuccess(data) {
+      console.log('теперь ты зареган') //готово, должно работать
+      dispatch(setIsUserRegistered(true)) //кнопочка исчезает
+    },
+    onError(error) {
+      console.log('Error', error)
+    },
+  })
 
   // не получилось сделать как выше, поэтому сделал вот так, так тоже сразу можно, но будет дольше транза готовиться, тк конфиг сосздается в момент нажатия
-  const {
-    data: approveData,
-    isLoading: isLoadApprove,
-    isSuccess: isSuccessApprove,
-    write: approveUsdt
-  } = useContractWrite({
-    address: USDT_ADDRESS,
-    abi: USDT_abi,
-    functionName: 'approve',
-    args: [CONTRACT_ADDRESS, 0] // вместо нуля надо сумму которую пользователь хочет задонатить
-  })
+  // const {
+  //   data: approveData,
+  //   isLoading: isLoadApprove,
+  //   isSuccess: isSuccessApprove,
+  //   write: approveUsdt
+  // } = useContractWrite({
+  //   address: USDT_ADDRESS,
+  //   abi: USDT_abi,
+  //   functionName: 'approve',
+  //   args: [CONTRACT_ADDRESS, 0] // вместо нуля надо сумму которую пользователь хочет задонатить
+  // })
+  //
+  // const {
+  //   data: DonateData,
+  //   isLoading: isLoadDonate,
+  //   isSuccess: isSuccessDonate,
+  //   write: donateInUsdt
+  // } = useContractWrite({
+  //   address: CONTRACT_ADDRESS,
+  //   abi: MainContract_abi,
+  //   functionName: 'donateInUSDT',
+  //   args: [0, 1 * 10 ** 18] //аналогично, но тут пока 1 токен донатится и id эксперта 0
+  // })
+  //
+  // const {data: ApprovalData, isError: readApproveError, isLoading: isLoadingApprovalRead} = useContractRead({ //вот эта штука смотрит сколько approve в токенах
+  //   address: USDT_ADDRESS,
+  //   abi: USDT_abi,
+  //   functionName: 'allowance',
+  //   args: [address, CONTRACT_ADDRESS]
+  // })
 
-  const {
-    data: DonateData,
-    isLoading: isLoadDonate,
-    isSuccess: isSuccessDonate,
-    write: donateInUsdt
-  } = useContractWrite({
-    address: CONTRACT_ADDRESS,
-    abi: MainContract_abi,
-    functionName: 'donateInUSDT',
-    args: [0, 1 * 10 ** 18] //аналогично, но тут пока 1 токен донатится и id эксперта 0
-  })
 
-  const {data: ApprovalData, isError: readApproveError, isLoading: isLoadingApprovalRead} = useContractRead({ //вот эта штука смотрит сколько approve в токенах
-    address: USDT_ADDRESS,
-    abi: USDT_abi,
-    functionName: 'allowance',
-    args: [address, CONTRACT_ADDRESS]
-  })
-  console.log(ApprovalData)
-
-
-  if (isSuccessDonate) console.log('Задоначено')
-  if (isLoadDonate) console.log('донат производится...')
+  // if (isSuccessDonate) console.log('Задоначено')
+  // if (isLoadDonate) console.log('донат производится...')
   //
 
   const isUserRegistered = useSelector(selectIsUserRegistered) // берем из редакса значение - зареган или нет
@@ -104,16 +118,30 @@ const PageWrapper = () => {
     },
   })
 
+  const {data: usdtBalance} = useContractRead({
+    address: USDT_ADDRESS,
+    abi: USDT_abi,
+    functionName: 'balanceOf',
+    args: [address],
+    onError(error) {
+      console.log('Ошибка', error)
+    },
+    onSuccess(data) {
+      console.log('Usdt balance:', data)
+    },
+  })
+
+
   useEffect(() => {
     if (isConnected) {
       if (switchNetwork) switchNetwork(80001)
       if (isRegistered) isRegistered()  // вызываем функцию (если хук useContractRead успел отработать и функция есть)
 
-
-      if (data) {  // почему-то ошибка вылетает иногда, что data - undefined.
+      if (nativeBalance) {  // почему-то ошибка вылетает иногда, что data - undefined.
         dispatch(setWallet({
           number: address,
-          balance: ethers.formatUnits(data.value, data.decimals).slice(0, -15),
+          balance: ethers.formatUnits(nativeBalance.value, nativeBalance.decimals).slice(0, -15),
+          USDT_balance: ethers.formatUnits(usdtBalance, 18).slice(0, -15),
         }))
       }
       if (connectModalIsShown) {
@@ -121,13 +149,22 @@ const PageWrapper = () => {
         navigate('role')
       }
     }
-  }, [isConnected, data, isUserRegistered])
+  }, [isConnected, nativeBalance])
+
 
   return (
     <>
       {!isUserRegistered && isConnected && <button
         onClick={() => register()}
-        style={{'padding': 20, 'border': '2px red solid', 'position': 'absolute', 'right': 180, 'top': 10, 'borderRadius': 15, 'backgroundColor':'#fff'}}
+        style={{
+          'padding': 20,
+          'border': '2px red solid',
+          'position': 'absolute',
+          'right': 180,
+          'top': 10,
+          'borderRadius': 15,
+          'backgroundColor': '#fff'
+        }}
       >Register</button>}
 
       {/*теперь донатим по кнопке Donate - в списке экспертов*/}
