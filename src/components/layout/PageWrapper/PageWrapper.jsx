@@ -14,6 +14,7 @@ import {
   usePrepareContractWrite,
   useSwitchNetwork
 } from "wagmi";
+import {useWaitForTransaction,} from 'wagmi'
 import {useEffect, useState} from "react";
 import {
   selectConnectIsShown, selectIsUserRegistered,
@@ -47,7 +48,16 @@ const PageWrapper = () => {
     functionName: 'register',
   });
   const {write: register} = useContractWrite(registerConfig)
-
+  const waitForTransaction = useWaitForTransaction({
+    hash: register?.data?.hash,
+    timeout: 2_000,
+    onSuccess(data) {
+      console.log('сюда что хочешь пиши', data) //готово, должно работать
+    },
+    onError(error) {
+      console.log('Error', error)
+    },
+  })
   // не получилось сделать как выше, поэтому сделал вот так, так тоже сразу можно, но будет дольше транза готовиться, тк конфиг сосздается в момент нажатия
   const {
     data: approveData,
