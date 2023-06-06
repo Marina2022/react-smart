@@ -11,7 +11,6 @@ const ExpertList = () => {
     return sum + elem.donates.length
   }, 0)
 
-
   return (
     <div className={s.expertsBlock}>
       <h2 className={s.expertsTitle}>Donate to your favorite expert</h2>

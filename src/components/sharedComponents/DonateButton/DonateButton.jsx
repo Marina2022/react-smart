@@ -55,8 +55,6 @@ const DonateButton = ({expert, classname, bonus}) => {
           <div className={s.tooltip}>Register for donate</div>
         }
 
-
-
       </div>
 
       <DonateModal isDonateModalShown={isDonateModalShown} setIsDonateModalShown={setIsDonateModalShown} expert={expert} bonus={bonus}/>

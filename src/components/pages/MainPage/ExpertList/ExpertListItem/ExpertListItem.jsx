@@ -12,7 +12,7 @@ const ExpertListItem = ({expert, number, globalDonatesNumber}) => {
   }, 0)
 
   const avatar = expert.expert.image ? expert.expert.image : defaultAva;
-  const bonus = parseInt  (PRIZE_FUND * expert.donates.length /  globalDonatesNumber)
+  const bonus = (PRIZE_FUND * expert.donates.length /  globalDonatesNumber).toFixed(1) + 'k'
   const [isExpertModalActive, setExpertModalActive] = useState(false);
 
   return (
@@ -25,7 +25,7 @@ const ExpertListItem = ({expert, number, globalDonatesNumber}) => {
         </a>
       </div>
       <div className={s.cellContributors}>{contributors}</div>
-      <div className={s.cellDonations}>${donations} <span className={s.cellDonationsPlus}>+{bonus}</span></div>
+      <div className={s.cellDonations}><span className={s.cellDonationsSum}>${donations}</span> <span className={s.cellDonationsPlus}>+{bonus}</span></div>
       <DonateButton expert={expert} bonus={bonus}/>
       <ExpertInfoModal isExpertModalActive={isExpertModalActive} setExpertModalActive={setExpertModalActive}
                        expert={expert} avatar={avatar} donations={donations} bonus={bonus}/>

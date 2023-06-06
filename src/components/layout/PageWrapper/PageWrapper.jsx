@@ -40,12 +40,13 @@ const PageWrapper = () => {
 
   const {switchNetwork} = useSwitchNetwork()
 
-
   const {config: registerConfig, error: errRegister} = usePrepareContractWrite({
     address: CONTRACT_ADDRESS,
     abi: MainContract_abi,
     functionName: 'register',
+
   });
+
   const {write: register} = useContractWrite(registerConfig)
 
   // не получилось сделать как выше, поэтому сделал вот так, так тоже сразу можно, но будет дольше транза готовиться, тк конфиг сосздается в момент нажатия
@@ -105,7 +106,6 @@ const PageWrapper = () => {
 
   useEffect(() => {
     if (isConnected) {
-      console.log('is connected')
       if (switchNetwork) switchNetwork(80001)
       if (isRegistered) isRegistered()  // вызываем функцию (если хук useContractRead успел отработать и функция есть)
 
@@ -121,7 +121,7 @@ const PageWrapper = () => {
         navigate('role')
       }
     }
-  }, [isConnected, data])
+  }, [isConnected, data, isUserRegistered])
 
   return (
     <>
@@ -131,17 +131,6 @@ const PageWrapper = () => {
       >Register</button>}
 
       {/*теперь донатим по кнопке Donate - в списке экспертов*/}
-
-      {/*{isUserRegistered && <button*/}
-      {/*  onClick={() => approveUsdt()}*/}
-      {/*  style={{'padding': 20, 'border': '2px green solid', 'position': 'absolute', 'right': 180}}*/}
-      {/*>Approve</button>}*/}
-
-      {/*{isUserRegistered && <button*/}
-      {/*  onClick={() => donateInUsdt()}*/}
-      {/*  style={{'padding': 20, 'border': '2px pink solid', 'position': 'absolute', 'right': 180, "marginRight": 120}}*/}
-      {/*>Donate</button>}*/}
-
 
       <Header/>
       <Routes>
