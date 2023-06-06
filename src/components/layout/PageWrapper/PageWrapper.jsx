@@ -47,12 +47,12 @@ const PageWrapper = () => {
     abi: MainContract_abi,
     functionName: 'register',
   });
-  const {write: register} = useContractWrite(registerConfig)
+  const {data: regData, write: register} = useContractWrite(registerConfig)
   const waitForTransaction = useWaitForTransaction({
-    hash: register?.data?.hash,
-    timeout: 2_000,
+    hash: regData?.hash,
     onSuccess(data) {
-      console.log('сюда что хочешь пиши', data) //готово, должно работать
+      console.log('теперь ты зареган') //готово, должно работать
+      dispatch(setIsUserRegistered(true)) //кнопочка исчезает
     },
     onError(error) {
       console.log('Error', error)
