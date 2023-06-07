@@ -59,7 +59,8 @@ const DonateModal = ({expert, isDonateModalShown, setIsDonateModalShown, bonus})
             <p className={s.youVote}>You vote for {expert.expert.name + ' ' + expert.expert.position}</p>
             <div className={s.youPay}>
               <span>You pay</span>
-              <input onChange={onPayInputChange} type="text" placeholder="$" className={s.payInput} value={donateInputValue}/>
+              <input onChange={onPayInputChange} type="text" placeholder="$" className={s.payInput}
+                     value={donateInputValue}/>
 
             </div>
             <div className={s.textQuadr}>
@@ -70,10 +71,10 @@ const DonateModal = ({expert, isDonateModalShown, setIsDonateModalShown, bonus})
 
             <div className={s.text}>
               <span>Balance</span>
-              <div className={s.bonusWrapper}><span>${wallet.balance === '' ? '0' : wallet.balance}</span></div>
+              <div className={s.bonusWrapper}><span>${wallet.USDT_balance === '' ? '0' : wallet.USDT_balance}</span></div>
             </div>
             <div className={s.buttonWrapper}>
-              <ApprovePaymentBtn step={step} setStep={setStep} expertId={expert.expert.id} />
+              <ApprovePaymentBtn step={step} setStep={setStep} expertId={expert.expert.id}/>
               <ConfirmPaymentBtn step={step} setStep={setStep} expertId={expert.expert.id}/>
             </div>
 
@@ -83,7 +84,6 @@ const DonateModal = ({expert, isDonateModalShown, setIsDonateModalShown, bonus})
               <img src={step === 1 ? twoInactive : twoActive} alt="step"/>
             </div>
           </div>
-
         }
         {
           step === 3 && <div className={s.step_3}>

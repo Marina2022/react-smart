@@ -7,7 +7,7 @@ import braveIcon from "../../../../../assets/brave.svg";
 import {useSelector} from "react-redux";
 import {selectWalletType} from "../../../../../store/reducers/dataReducer";
 
-import backBtn from '../../../../../assets/backBtn.svg'
+// import backBtn from '../../../../../assets/backBtn.svg'
 import StartWalletBtn from "../../../../smartContractComponents/StartWalletBtn/StartWalletBtn";
 
 const ConnectStep2 = ({setStep}) => {
@@ -32,9 +32,9 @@ const ConnectStep2 = ({setStep}) => {
   return (
     <div className={s.step2}>
       <StartWalletBtn setStep={setStep} />
-      <button className={s.backBtn}><img src={backBtn} alt="back button"
-                                         onClick={() => setStep(1)}
-      /></button>
+      {/*<button className={s.backBtn}><img src={backBtn} alt="back button"*/}
+      {/*                                   onClick={() => setStep(1)}*/}
+      {/*/></button>*/}
       <h2 className={s.title}>{walletType}</h2>
       <img className={s.image} src={image} alt="brand picture"/>
 

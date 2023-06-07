@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {selectConnectIsShown, setConnectIsShown} from "../../../../store/reducers/dataReducer";
+import {selectConnectIsShown, setConnectIsShown, setWalletType} from "../../../../store/reducers/dataReducer";
 
 import ConnectStep1 from "./ConnectStep1/ConnectStep1";
 import ConnectStep2 from "./ConnectStep2/ConnectStep2";
@@ -11,7 +11,7 @@ import s from './ConnectModal.module.scss';
 
 const ConnectModal = () => {
   const onClose = () => {
-    setStep(1);
+    setStep(2);
     dispatch(setConnectIsShown(false));
   }
   const onKeydown = (e) => {
@@ -23,9 +23,10 @@ const ConnectModal = () => {
     return () => document.removeEventListener('keydown', onKeydown)
   }, [])
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const connectIsActive = useSelector(selectConnectIsShown)
   const dispatch = useDispatch();
+  dispatch(setWalletType('WalletConnect'))
 
   return (
     connectIsActive && <div>

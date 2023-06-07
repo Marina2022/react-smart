@@ -84,7 +84,7 @@ const initialState = {
   isOneExpertLoading: false,
   donateInputValue: '',
   successfullyDonated: null,
-  isUserRegistered: true
+  isUserRegistered: true,
 }
 
 const dataReducer = createSlice({
@@ -154,7 +154,6 @@ const dataReducer = createSlice({
         }
       })
 
-
       // проверяем, не проголосовал ли юзер за эксперта в прошлое посещение сайта
       experts.forEach((expert) => {
         if (expert.donates.find((item) => {
@@ -213,7 +212,7 @@ export const {
   setIsVoted,
   setDonateInputValue,
   setSuccessfullyDonated,
-  setIsUserRegistered
+  setIsUserRegistered,
 } = dataReducer.actions
 
 export default dataReducer.reducer

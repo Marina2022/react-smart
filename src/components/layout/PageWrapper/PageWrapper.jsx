@@ -105,8 +105,6 @@ const PageWrapper = () => {
   })
 
 
-
-
   useEffect(() => {
     if (isConnected) {
       if (switchNetwork) switchNetwork(80001)

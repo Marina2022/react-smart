@@ -5,11 +5,12 @@ import cn from "classnames";
 import {useNavigate} from "react-router-dom";
 import {
   selectCurrentExpert,
-  selectCurrentExpertId,
-  selectFormIsSubmitting, selectWallet,
+  selectCurrentExpertId,   selectFormIsSubmitting, selectWallet,
   sendExpert
 } from "../../../store/reducers/dataReducer";
 import {useDispatch, useSelector} from "react-redux";
+import {useContractWrite, useWaitForTransaction} from "wagmi";
+import {CONTRACT_ADDRESS, MainContract_abi} from "../../../consts";
 
 const EditExpertProfile = () => {
   const expertId = useSelector(selectCurrentExpertId)
@@ -31,7 +32,7 @@ const EditExpertProfile = () => {
 
   let walletaddress
   const wallet = useSelector(selectWallet)
-if (wallet) walletaddress = wallet.number
+  if (wallet) walletaddress = wallet.number
 
   const refUser = useRef(null);
   const [file, setFile] = useState(null)
@@ -61,10 +62,10 @@ if (wallet) walletaddress = wallet.number
       secondName: currentExpert.expert.position,
       experience: currentExpert.expert.experience,
       courses: currentExpert.expert.learnDescription,
-      telegram: '',
-      twitter: '',
-      instagram: '',
-      website: '',
+      telegram: currentExpert.expert.telegram,
+      twitter: currentExpert.expert.twitter,
+      instagram: currentExpert.expert.instagram,
+      website: currentExpert.expert.webSite,
     }
   } else {
     initialValues = {
@@ -78,6 +79,48 @@ if (wallet) walletaddress = wallet.number
       website: '',
     }
   }
+
+  const [firstName, setFirstName] = useState('')
+  const [secondName, setSecondName] = useState('')
+
+  const [info, setInfo] = useState({
+    name: '',
+    position: '',
+    experience: '',
+    learnDescription: '',
+    telegram: '',
+    instagram: '',
+    twitter: '',
+    webSite: '',
+    address: walletaddress
+  })
+
+  const {
+    data: registerExpData,
+    isLoading: isLoadingRegisterExp,
+    isSuccess: isSuccessRegisterExp,
+    write: registerAsExp
+  } = useContractWrite({
+    address: CONTRACT_ADDRESS,
+    abi: MainContract_abi,
+    functionName: 'registerAsExpert',
+    args: [firstName + ' ' + secondName]
+  })
+  const {isLoading: isLoad, isSuccess} = useWaitForTransaction({
+    hash: registerExpData?.hash,
+
+    onSuccess(data) {
+      console.log('Запрос на регистрацию отправлен', data)
+
+      const newExpertId = expertId ? expertId : Math.trunc(new Date().valueOf() / 1000)
+      const sendData = {
+        expertId: newExpertId,
+        info: info
+      }
+      dispatch(sendExpert({sendData, file}))
+    },
+  })
+
   return (
     <div className={s.container}>
 
@@ -101,26 +144,19 @@ if (wallet) walletaddress = wallet.number
               }}
 
               onSubmit={(values) => {
-                const newExpertId = expertId ? expertId : Math.trunc(new Date().valueOf() / 1000)
-                const sendData = {
-                  expertId: newExpertId,
-                  info: {
-                    name: values.firstName,
-                    position: values.secondName,
-                    links: values.telegram + ' ' + values.instagram + ' ' + values.twitter + ' ' + values.website,
-                    experience: values.experience,
-                    learnDescription: values.courses,
-                    telegram: values.telegram,
-                    instagram: values.instagram,
-                    twitter: values.twitter,
-                    webSite: values.website,
-                    address: walletaddress
+                if (!expertId) {  // эксперт создает профиль и регистрируется на блокчейне
+                  registerAsExp()
+                } else {  // эксперт редактирует профиль  (регистрация уже не нужна)
+                  // const newExpertId = expertId ? expertId : Math.trunc(new Date().valueOf() / 1000)
+                  const sendData = {
+                    expertId: expertId,
+                    info: info
                   }
+                  dispatch(sendExpert({sendData, file}))
                 }
-                dispatch(sendExpert({sendData, file}))
               }}
       >
-        {({errors, touched, values}) => (
+        {({errors, touched, values, handleBlur}) => (
           <Form className={s.form}>
             <h1 className={s.title}>Tell us about you</h1>
             <div className={s.profileImageLabel}>Profile image</div>
@@ -131,9 +167,23 @@ if (wallet) walletaddress = wallet.number
             <div className={s.topInputWrapper}>
 
               <Field type="text" name="firstName" placeholder="First Name" className={s.topInput}
+                     onBlur={(e) => {
+                       setFirstName(e.target.value)
+                       setInfo(prevState => ({
+                         ...prevState, name: e.target.value, address: walletaddress
+                       }))
+                       handleBlur(e)
+                     }}
                      style={{'borderColor': (errors.firstName && touched.firstName) ? 'red' : touched.firstName ? '#6B7280' : '#D1D5DB'}}
               />
               <Field type="text" name="secondName" placeholder="Second Name" className={s.topInput}
+                     onBlur={(e) => {
+                       setSecondName(e.target.value)
+                       setInfo(prevState => ({
+                         ...prevState, position: e.target.value
+                       }))
+                       handleBlur(e)
+                     }}
                      style={{'borderColor': (errors.secondName && touched.secondName) ? 'red' : touched.secondName ? '#6B7280' : '#D1D5DB'}}
               />
             </div>
@@ -145,6 +195,12 @@ if (wallet) walletaddress = wallet.number
             <Field as="textarea" name="experience" placeholder="I am an Information Technology Specialist..."
                    className={s.textarea}
                    style={{'borderColor': (errors.experience && touched.experience) ? 'red' : touched.experience ? '#6B7280' : '#D1D5DB'}}
+                   onBlur={(e) => {
+                     setInfo(prevState => ({
+                       ...prevState, experience: e.target.value
+                     }))
+                     handleBlur(e)
+                   }}
             />
             <div className={s.textAreaBottomLabel}>{values.experience.length}/200</div>
 
@@ -154,6 +210,12 @@ if (wallet) walletaddress = wallet.number
             <Field as="textarea" name="courses" placeholder="Artificial intelligence for business..."
                    className={s.textarea}
                    style={{'borderColor': (errors.courses && touched.courses) ? 'red' : touched.courses ? '#6B7280' : '#D1D5DB'}}
+                   onBlur={(e) => {
+                     setInfo(prevState => ({
+                       ...prevState, learnDescription: e.target.value
+                     }))
+                     handleBlur(e)
+                   }}
             />
             <div className={s.textAreaBottomLabel}>{values.courses.length}/200</div>
 
@@ -162,24 +224,48 @@ if (wallet) walletaddress = wallet.number
             <div className={cn(s.socialInputWrapper, s.tg)}>
               <Field name="telegram" placeholder="Website URL" className={s.socialInput}
                      style={{'borderColor': values.telegram ? '#1F2937' : '#F3F4F6'}}
+                     onBlur={(e) => {
+                       setInfo(prevState => ({
+                         ...prevState, telegram: e.target.value
+                       }))
+                       handleBlur(e)
+                     }}
               />
             </div>
 
             <div className={cn(s.socialInputWrapper, s.twitter)}>
               <Field name="twitter" placeholder="Website URL" className={s.socialInput}
                      style={{'borderColor': values.twitter ? '#1F2937' : '#F3F4F6'}}
+                     onBlur={(e) => {
+                       setInfo(prevState => ({
+                         ...prevState, twitter: e.target.value
+                       }))
+                       handleBlur(e)
+                     }}
               />
             </div>
 
             <div className={cn(s.socialInputWrapper, s.instagram)}>
               <Field name="instagram" placeholder="Website URL" className={s.socialInput}
                      style={{'borderColor': values.instagram ? '#1F2937' : '#F3F4F6'}}
+                     onBlur={(e) => {
+                       setInfo(prevState => ({
+                         ...prevState, instagram: e.target.value
+                       }))
+                       handleBlur(e)
+                     }}
               />
             </div>
 
             <div className={cn(s.socialInputWrapper, s.website)}>
               <Field name="website" placeholder="Website URL" className={s.socialInput}
                      style={{'borderColor': values.website ? '#1F2937' : '#F3F4F6'}}
+                     onBlur={(e) => {
+                       setInfo(prevState => ({
+                         ...prevState, webSite: e.target.value
+                       }))
+                       handleBlur(e)
+                     }}
               />
             </div>
 

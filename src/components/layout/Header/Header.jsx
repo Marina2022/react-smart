@@ -14,7 +14,6 @@ const Header = () => {
 
   const onHeaderBtnClick = () => {
     if (wallet) {
-      console.log(wallet)
       setProfileModalIsShown(true);
     } else {
       dispatch(setConnectIsShown(true))
