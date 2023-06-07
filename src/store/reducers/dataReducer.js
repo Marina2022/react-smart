@@ -140,9 +140,7 @@ const dataReducer = createSlice({
       state.isLoading = true
     })
     .addCase(fetchExperts.fulfilled, (state, action) => {
-
       const experts = action.payload
-
 
       // авторизация для эксперта, который раньше уже регистрировался
       experts.forEach((expert) => {

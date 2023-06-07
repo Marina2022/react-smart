@@ -41,22 +41,24 @@ const ExpertProfile = () => {
   let donations = 0
   let bonus = 0
 
+  let expertInfo = null
   if (wallet) {
-    const expertInfo = experts.find((expert) => {
+     expertInfo = experts.find((expert) => {
       return expert.expert.address === wallet.number
     })
 
-    donations = expertInfo.donates.reduce((sum, elem) => {
-      return sum + +elem._revardsAmount
-    }, 0)
+    if (expertInfo) {  // если эксперт в списке экспертов уже есть, то можно посчитать его donations и QF bonus
+      donations = expertInfo.donates.reduce((sum, elem) => {
+        return sum + +elem._revardsAmount
+      }, 0)
 
-    const globalDonatesNumber = experts.reduce((sum, elem) => {
-      return sum + elem.donates.length
-    }, 0)
+      const globalDonatesNumber = experts.reduce((sum, elem) => {
+        return sum + elem.donates.length
+      }, 0)
 
-    bonus = (PRIZE_FUND * expertInfo.donates.length /  globalDonatesNumber).toFixed(1) + 'k'
+      bonus = (PRIZE_FUND * expertInfo.donates.length / globalDonatesNumber).toFixed(1) + 'k'
+    }
   }
-
 
   if (isCurrentExpertLoading) return <div style={{'textAlign': 'center', 'padding': 50}}><RotatingLines
     strokeColor="#4481c3"/></div>
@@ -78,7 +80,10 @@ const ExpertProfile = () => {
           </div>
         </div>
         <div>
-          {currentExpertId && <ExpertDonations donations={donations ? donations: ''} bonus={0} classname={s.expertDonations}/>}
+          {
+            expertInfo &&
+            <ExpertDonations donations={donations} bonus={bonus} classname={s.expertDonations}/>
+          }
 
           {currentExpertId && < ClaimButton/>}
         </div>

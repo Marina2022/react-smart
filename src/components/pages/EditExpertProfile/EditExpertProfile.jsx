@@ -4,8 +4,9 @@ import {useEffect, useRef, useState} from "react";
 import cn from "classnames";
 import {useNavigate} from "react-router-dom";
 import {
+  fetchExperts,
   selectCurrentExpert,
-  selectCurrentExpertId,   selectFormIsSubmitting, selectWallet,
+  selectCurrentExpertId, selectFormIsSubmitting, selectWallet,
   sendExpert
 } from "../../../store/reducers/dataReducer";
 import {useDispatch, useSelector} from "react-redux";
@@ -118,6 +119,7 @@ const EditExpertProfile = () => {
         info: info
       }
       dispatch(sendExpert({sendData, file}))
+
     },
   })
 
@@ -147,7 +149,6 @@ const EditExpertProfile = () => {
                 if (!expertId) {  // эксперт создает профиль и регистрируется на блокчейне
                   registerAsExp()
                 } else {  // эксперт редактирует профиль  (регистрация уже не нужна)
-                  // const newExpertId = expertId ? expertId : Math.trunc(new Date().valueOf() / 1000)
                   const sendData = {
                     expertId: expertId,
                     info: info

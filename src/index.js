@@ -17,15 +17,6 @@ export const store = configureStore({
   reducer: rootReducer
 })
 
-store.dispatch(fetchExperts())
-store.dispatch(fetchOtherData())
-
-// будет потом подтягиваться санкой из АПИ
-store.dispatch(setRoundData({
-  status: 1,
-  timeLeft: 202530,
-}))
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
