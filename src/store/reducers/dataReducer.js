@@ -153,19 +153,20 @@ const dataReducer = createSlice({
       })
 
       // проверяем, не проголосовал ли юзер за эксперта в прошлое посещение сайта
-      experts.forEach((expert) => {
-        if (expert.donates.find((item) => {
-          let found = false;
-          if (state.wallet) { // если кошелек подключен
-            found = item._sender === state.wallet.number
-          }
-          return found
-        })) {
-          expert.isVoted = true
-        } else {
-          expert.isVoted = false
-        }
-      })
+      // experts.forEach((expert) => {
+      //   if (expert.donates.find((item) => {
+      //     let found = false;
+      //     if (state.wallet) { // если кошелек подключен
+      //       found = item._sender === state.wallet.number
+      //     }
+      //     return found
+      //   })) {
+      //     expert.isVoted = true
+      //   } else {
+      //     expert.isVoted = false
+      //   }
+      // })
+
       state.experts = experts
       state.isLoading = false
 //      console.log(experts)
