@@ -90,6 +90,21 @@ const PageWrapper = () => {
       console.log('Usdt balance:', data)
     },
   })
+  //НИЖЕ отправка регистрации, registerAsExp - функция которая вызовет регистрацию, в onSuccess можешь сделать все что угодно)
+  const { data: registerExpData, isLoading:isLoadingRegisterExp, isSuccess: isSuccessRegisterExp, write: registerAsExp } = useContractWrite({
+    address: CONTRACT_ADDRESS,
+    abi: MainContract_abi,
+    functionName: 'registerAsExpert',
+    args: ["тута имя эксперта должно быть"]
+  })
+  const { isLoading: isLoad, isSuccess } = useWaitForTransaction({
+    hash: registerExpData?.hash,
+    onSuccess(data) {
+      console.log('Запрос на регистрацию отправлен', data)
+    },
+  })
+
+
 
 
   useEffect(() => {
