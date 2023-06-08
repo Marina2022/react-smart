@@ -45,7 +45,6 @@ const TopProfileModal = ({profileModalIsShown, setProfileModalIsShown, classname
     navigate('/')
     disconnect()
     window.location.reload()
-
   }
 
   useEffect(() => {
@@ -81,7 +80,7 @@ const TopProfileModal = ({profileModalIsShown, setProfileModalIsShown, classname
             <div className={s.balanceName}>Donated</div>
             <div className={s.balanceValue}>{successfullyDonated ? successfullyDonated : '0'} Matic</div>
           </div>
-          <WithdrawBtn classname={s.withDraw}/>
+          <WithdrawBtn classname={s.withDraw} disabled={true}/>
         </div>
       </div>
     </div>

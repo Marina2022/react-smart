@@ -13,7 +13,7 @@ import twoInactive from "../../../../assets/progress/two-inactive.svg";
 import twoActive from "../../../../assets/progress/two-active.svg";
 
 
-const DonateModal = ({expert, isDonateModalShown, setIsDonateModalShown, bonus}) => {
+const DonateModal = ({expert, isDonateModalShown, setIsDonateModalShown, bonus, setIsExpertVoted}) => {
 
   const dispatch = useDispatch()
 
@@ -61,7 +61,6 @@ const DonateModal = ({expert, isDonateModalShown, setIsDonateModalShown, bonus})
               <span>You pay</span>
               <input onChange={onPayInputChange} type="text" placeholder="$" className={s.payInput}
                      value={donateInputValue}/>
-
             </div>
             <div className={s.textQuadr}>
               <span>Quadratic</span>
@@ -75,7 +74,7 @@ const DonateModal = ({expert, isDonateModalShown, setIsDonateModalShown, bonus})
             </div>
             <div className={s.buttonWrapper}>
               <ApprovePaymentBtn step={step} setStep={setStep} expertId={expert.expert.id}/>
-              <ConfirmPaymentBtn step={step} setStep={setStep} expertId={expert.expert.id}/>
+              <ConfirmPaymentBtn step={step} setStep={setStep} expertId={expert.expert.id} setIsExpertVoted={setIsExpertVoted}/>
             </div>
 
             <div className={s.progress}>
@@ -93,11 +92,8 @@ const DonateModal = ({expert, isDonateModalShown, setIsDonateModalShown, bonus})
           </div>
         }
 
-
       </div>
-
       <div className="overlay" onClick={onClose}></div>
-
     </div>
   );
 };

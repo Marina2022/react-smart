@@ -10,7 +10,6 @@ import {
   useBalance,
   useContractRead,
   useContractWrite,
-  useNetwork,
   usePrepareContractWrite,
   useSwitchNetwork
 } from "wagmi";
@@ -18,7 +17,6 @@ import {useWaitForTransaction,} from 'wagmi'
 import {useEffect, useState} from "react";
 import {
   selectConnectIsShown, selectIsUserRegistered,
-  selectWallet,
   setConnectIsShown,
   setIsUserRegistered,
   setWallet
@@ -45,9 +43,7 @@ const PageWrapper = () => {
     address: CONTRACT_ADDRESS,
     abi: MainContract_abi,
     functionName: 'register',
-
   });
-
 
   const {data: regData, write: register} = useContractWrite(registerConfig)
   const waitForTransaction = useWaitForTransaction({
@@ -74,7 +70,6 @@ const PageWrapper = () => {
     onSuccess(data) {
       console.log('Юзер зареган:', data)
       dispatch(setIsUserRegistered(data))
-      // setShowButton(!data)  // - теперь показ кнопок зависит от значения isUserRegistered из редакса
     },
   })
 
@@ -90,20 +85,6 @@ const PageWrapper = () => {
       console.log('Usdt balance:', data)
     },
   })
-  //НИЖЕ отправка регистрации, registerAsExp - функция которая вызовет регистрацию, в onSuccess можешь сделать все что угодно)
-  const { data: registerExpData, isLoading:isLoadingRegisterExp, isSuccess: isSuccessRegisterExp, write: registerAsExp } = useContractWrite({
-    address: CONTRACT_ADDRESS,
-    abi: MainContract_abi,
-    functionName: 'registerAsExpert',
-    args: ["тута имя эксперта должно быть"]
-  })
-  const { isLoading: isLoad, isSuccess } = useWaitForTransaction({
-    hash: registerExpData?.hash,
-    onSuccess(data) {
-      console.log('Запрос на регистрацию отправлен', data)
-    },
-  })
-
 
   useEffect(() => {
     if (isConnected) {
@@ -114,7 +95,7 @@ const PageWrapper = () => {
         dispatch(setWallet({
           number: address,
           balance: ethers.formatUnits(nativeBalance.value, nativeBalance.decimals).slice(0, -15),
-          USDT_balance: ethers.formatUnits(usdtBalance, 18).slice(0, -15),
+          USDT_balance: ethers.formatUnits((BigInt(usdtBalance)), 18).slice(0, -15),
         }))
       }
       if (connectModalIsShown) {
@@ -123,7 +104,6 @@ const PageWrapper = () => {
       }
     }
   }, [isConnected, nativeBalance])
-
 
   return (
     <>
@@ -139,8 +119,6 @@ const PageWrapper = () => {
           'backgroundColor': '#fff'
         }}
       >Register</button>}
-
-      {/*теперь донатим по кнопке Donate - в списке экспертов*/}
 
       <Header/>
       <Routes>

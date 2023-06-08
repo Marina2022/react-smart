@@ -2,7 +2,6 @@ import s from './DonateButton.module.scss'
 import cn from "classnames";
 import {useSelector} from "react-redux";
 import {
-  selectDonateInputValue,
   selectIsUserRegistered,
   selectRound,
   selectWallet
@@ -12,7 +11,6 @@ import DonateModal from "./DonateModal/DonateModal";
 
 const DonateButton = ({expert, classname, bonus}) => {
 
-  const donateInputValue = useSelector(selectDonateInputValue)
   const wallet = useSelector(selectWallet);
   const roundStatus = useSelector(selectRound).status;
   const [isDonateModalShown, setIsDonateModalShown] = useState(false);
@@ -20,6 +18,15 @@ const DonateButton = ({expert, classname, bonus}) => {
 
   const isUserRegistered = useSelector(selectIsUserRegistered) // берем из редакса значение - зареган или нет
 
+  let isVoted = false
+
+  if (wallet) {
+    isVoted = expert.donates.find((donate) => {  // проверка - голосовал ли текущий пользователь за этого эксперта раньше
+      return donate._sender === wallet.number
+    })
+  }
+
+  const [isExpertVoted, setIsExpertVoted] = useState(isVoted ? true : false)
 
   const showTooltip = () => {
     setIsTooltipShown(true);
@@ -40,24 +47,29 @@ const DonateButton = ({expert, classname, bonus}) => {
       >
 
         <button className={cn(s.cellButton, classname)}
-                disabled={!wallet || roundStatus !== 1 || expert.isVoted === true || !isUserRegistered}
+                disabled={!wallet || roundStatus !== 1 || isExpertVoted === true || !isUserRegistered}
                 onClick={onDonateClick}
         >Donate
         </button>
 
         {
-          (!wallet ) && isTooltipShown &&
+          (!wallet) && isTooltipShown &&
           <div className={s.tooltip}>Connect your wallet for donate</div>
         }
 
         {
-          (!isUserRegistered ) && isTooltipShown &&
+          (!isUserRegistered) && isTooltipShown &&
           <div className={s.tooltip}>Register for donate</div>
         }
 
       </div>
 
-      <DonateModal isDonateModalShown={isDonateModalShown} setIsDonateModalShown={setIsDonateModalShown} expert={expert} bonus={bonus}/>
+      <DonateModal
+        isDonateModalShown={isDonateModalShown}
+        setIsDonateModalShown={setIsDonateModalShown}
+        expert={expert}
+        bonus={bonus}
+        setIsExpertVoted={setIsExpertVoted}/>
     </div>
   )
 }

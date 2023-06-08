@@ -24,33 +24,23 @@ import {
   fetchExperts,
   fetchOtherData,
   selectIsLoading,
-  selectWallet, setRoundData,
-  setWallet
+  setRoundData,
 } from "../../../store/reducers/dataReducer";
 import {RotatingLines} from 'react-loader-spinner';
 import ExpertList from "./ExpertList/ExpertList";
-import {useAccount, useBalance, useConnect, useContractWrite, useEnsName} from 'wagmi'
-import {InjectedConnector} from 'wagmi/connectors/injected'
-
-//
-import {Web3Button, Web3NetworkSwitch} from '@web3modal/react'
-import {ethers} from "ethers"
-import {usePrepareContractWrite} from 'wagmi'
-import {useContractRead} from 'wagmi'
 import {useEffect} from "react";
-import {store} from "../../../index";
 
-//
+
 const MainPage = () => {
 
   const dispatch = useDispatch()
 
   useEffect(()=>{
     dispatch(fetchExperts())
+
     dispatch(fetchOtherData())
 
-// будет потом подтягиваться санкой из АПИ
-    dispatch(setRoundData({
+    dispatch(setRoundData({  // объект будет потом подтягиваться санкой из АПИ
       status: 1,
       timeLeft: 202530,
     }))

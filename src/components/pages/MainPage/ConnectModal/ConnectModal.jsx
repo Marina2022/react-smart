@@ -18,15 +18,18 @@ const ConnectModal = () => {
     if (e.key === 'Escape')
       onClose();
   }
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
+    dispatch(setWalletType('WalletConnect'))
     document.addEventListener('keydown', onKeydown)
     return () => document.removeEventListener('keydown', onKeydown)
   }, [])
 
   const [step, setStep] = useState(2);
   const connectIsActive = useSelector(selectConnectIsShown)
-  const dispatch = useDispatch();
-  dispatch(setWalletType('WalletConnect'))
+
 
   return (
     connectIsActive && <div>

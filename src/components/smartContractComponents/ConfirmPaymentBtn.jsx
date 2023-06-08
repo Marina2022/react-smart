@@ -5,7 +5,7 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useContractWrite} from "wagmi";
 import {CONTRACT_ADDRESS, MainContract_abi} from "../../consts";
 
-const ConfirmPaymentBtn = ({step, setStep, expertId}) => {
+const ConfirmPaymentBtn = ({step, setStep, expertId, setIsExpertVoted}) => {
 
   const donateInputValue = useSelector(selectDonateInputValue)
   const dispatch = useDispatch()
@@ -21,9 +21,8 @@ const ConfirmPaymentBtn = ({step, setStep, expertId}) => {
     functionName: 'donateInUSDT',
     args: [expertId, donateInputValue * 10 ** 18],
     onSuccess(data) {
-      // не уверена, правильно ли делаю. В общем,это нужно сделать при успешном донате:
       setStep(3)
-      dispatch(setIsVoted(expertId))
+      setIsExpertVoted(true)
     }
   })
 
@@ -32,7 +31,6 @@ const ConfirmPaymentBtn = ({step, setStep, expertId}) => {
   }
 
   return (
-
     <button className={s.connectBtn} disabled={step === 1} onClick={onConfirmPaymentClick}>
       Confirm</button>
   );

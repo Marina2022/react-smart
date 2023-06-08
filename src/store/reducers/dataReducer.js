@@ -3,6 +3,7 @@ import {api} from '../../index'
 import {APIRoutes} from '../../consts'
 import history from "../../browserHistory";
 import mockExperts from "../../mocks/mockExperts";
+import {toast} from "react-toastify";
 
 export const fetchExperts = createAsyncThunk('data/fetchExperts',
   async () => {
@@ -45,9 +46,6 @@ export const fetchOneExpert = createAsyncThunk('data/fetchOneExpert',
 
 export const sendExpert = createAsyncThunk('data/sendExpert',
   async ({sendData, file}) => {
-    //async ({sendData1, file}) => {
-
-    //const data = await api.post(APIRoutes.sendExpert, sendData, {
     const data = await api.post(APIRoutes.sendExpert, sendData, {
       headers: {
         'Content-Type': 'application/json',
@@ -124,15 +122,6 @@ const dataReducer = createSlice({
       state.isUserRegistered = action.payload
     },
 
-
-    setIsVoted: (state, action) => {
-      const id = action.payload;
-      const targetExpertIndex = state.experts.findIndex((expert) => {
-        return expert.expert.id === id
-      })
-      const newTargetExpert = Object.assign(state.experts[targetExpertIndex], {isVoted: true})
-      state.experts = [...state.experts.slice(0, targetExpertIndex), newTargetExpert, ...state.experts.slice(targetExpertIndex + 1)]
-    },
   },
 
   extraReducers: (builder) => builder
@@ -151,21 +140,6 @@ const dataReducer = createSlice({
           }
         }
       })
-
-      // проверяем, не проголосовал ли юзер за эксперта в прошлое посещение сайта
-      // experts.forEach((expert) => {
-      //   if (expert.donates.find((item) => {
-      //     let found = false;
-      //     if (state.wallet) { // если кошелек подключен
-      //       found = item._sender === state.wallet.number
-      //     }
-      //     return found
-      //   })) {
-      //     expert.isVoted = true
-      //   } else {
-      //     expert.isVoted = false
-      //   }
-      // })
 
       state.experts = experts
       state.isLoading = false
@@ -188,6 +162,7 @@ const dataReducer = createSlice({
     .addCase(sendExpert.rejected, (state, action) => {
       console.log('expert uploading error ')
       state.formIsSubmitting = false
+      toast.error('expert uploading error')
     })
     .addCase(fetchOneExpert.pending, (state, action) => {
       state.isOneExpertLoading = true;
@@ -208,7 +183,6 @@ export const {
   setWalletType,
   setWallet,
   setUserRole,
-  setIsVoted,
   setDonateInputValue,
   setSuccessfullyDonated,
   setIsUserRegistered,
