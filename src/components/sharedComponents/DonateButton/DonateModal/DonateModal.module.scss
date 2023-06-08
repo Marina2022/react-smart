@@ -27,6 +27,7 @@
 }
 
 .closeBtn {
+  cursor: pointer;
   position: absolute;
   width: 16px;
   height: 16px;
@@ -34,7 +35,6 @@
   top: 26px;
   right: 28px;
 }
-
 
 .youVote {
   font-weight: 600;

@@ -4,6 +4,7 @@ import {selectDonateInputValue, setConnectIsShown, setIsVoted, setWallet} from "
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useContractWrite} from "wagmi";
 import {CONTRACT_ADDRESS, MainContract_abi} from "../../consts";
+import {toast} from "react-toastify";
 
 const ConfirmPaymentBtn = ({step, setStep, expertId, setIsExpertVoted}) => {
 
@@ -23,6 +24,9 @@ const ConfirmPaymentBtn = ({step, setStep, expertId, setIsExpertVoted}) => {
     onSuccess(data) {
       setStep(3)
       setIsExpertVoted(true)
+    },
+    onError(error) {
+      console.log(error)
     }
   })
 

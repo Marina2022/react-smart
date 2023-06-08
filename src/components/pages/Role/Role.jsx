@@ -1,7 +1,7 @@
 import s from './Role.module.scss'
-import {useState} from "react";
-import {useDispatch} from "react-redux";
-import {setUserRole} from "../../../store/reducers/dataReducer";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {selectCurrentExpert, selectCurrentExpertId, setUserRole} from "../../../store/reducers/dataReducer";
 import {useNavigate} from "react-router-dom";
 
 const Role = () => {

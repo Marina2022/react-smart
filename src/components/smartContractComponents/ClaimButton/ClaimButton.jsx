@@ -1,8 +1,7 @@
 import s from './ClaimButton.module.scss';
 import {useState} from "react";
 import {useSelector} from "react-redux";
-import {selectExperts, selectRound} from "../../../store/reducers/dataReducer";
-
+import {selectRound} from "../../../store/reducers/dataReducer";
 
 const ClaimButton = () => {
   const round = useSelector(selectRound)

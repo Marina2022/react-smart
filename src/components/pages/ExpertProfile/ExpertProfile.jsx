@@ -1,4 +1,4 @@
-import {useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useEffect} from "react";
 import {
   fetchOneExpert,
@@ -18,12 +18,14 @@ import ClaimButton from "../../smartContractComponents/ClaimButton/ClaimButton";
 import {PRIZE_FUND} from "../../../consts";
 
 const ExpertProfile = () => {
-  const id = useParams().id;
+  const paramsId = useParams().id;
   const dispatch = useDispatch()
 
+  const loc = useLocation()
+
   useEffect(() => {
-    dispatch(fetchOneExpert(id))
-  }, [])
+    dispatch(fetchOneExpert(paramsId))
+  }, [loc])
 
   const currentExpert = useSelector(selectCurrentExpert);
   const currentExpertId = useSelector(selectCurrentExpertId);
@@ -47,8 +49,7 @@ const ExpertProfile = () => {
 
 
      expertInfo = experts.find((expert) => {
-       console.log(expert.address)
-      return expert.address === wallet.number.toLowerCase()
+      return expert.id === +paramsId
     })
 
     console.log(expertInfo)
@@ -76,7 +77,7 @@ const ExpertProfile = () => {
         <div className={s.mainBlock}>
           <div className={s.leftBlock}>
             <img className={s.avatar} src={currentExpert.expert.image ? currentExpert.expert.image : ''} alt="avatar"/>
-            {currentExpertId && <button className={s.editBtn} onClick={onEditClick}>Edit profile</button>}
+            {currentExpertId === +paramsId && <button className={s.editBtn} onClick={onEditClick}>Edit profile</button>}
             {/*<button className={s.editBtn} onClick={onEditClick}>Edit profile</button>*/}
             <ShareProfile classname={s.shareProfile}/>
           </div>
@@ -91,7 +92,7 @@ const ExpertProfile = () => {
             <ExpertDonations donations={donations === 0 ? '0' : donations} bonus={bonus === 0 ? '0' : bonus} classname={s.expertDonations}/>
           }
 
-          {currentExpertId && < ClaimButton/>}
+          {currentExpertId === +paramsId && < ClaimButton/>}
         </div>
       </div>
     </div>

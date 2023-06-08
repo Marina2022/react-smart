@@ -22,7 +22,7 @@ const DonateButton = ({expert, classname, bonus}) => {
 
   if (wallet) {
     isVoted = expert.events.donates.find((donate) => {  // проверка - голосовал ли текущий пользователь за этого эксперта раньше
-      return donate._sender === wallet.number
+      return donate._sender === wallet.number.toLowerCase()
     })
   }
 

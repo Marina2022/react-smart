@@ -139,33 +139,21 @@ const EditExpertProfile = () => {
                   errors.courses = 'Required';
                 }
 
+                if (values.courses.length > 200) {
+                  errors.experience = 'no more than 200 symbols';
+                }
+
                 if (!values.experience) {
                   errors.experience = 'Required';
+                }
+
+                if (values.experience.length > 200) {
+                  errors.experience = 'no more than 200 symbols';
                 }
                 return errors;
               }}
 
               onSubmit={(values) => {
-
-                // const info = {
-                //   name: 'John',
-                //   position: 'Doe',
-                //   experience: 'In other existing market domains, such as healthcare, finance, logistics, and supply chain, a Blockchain specialist is responsible for designing and implementing ',
-                //   learnDescription: 'In the logistics and supply chain sector',
-                //   telegram: 'tg',
-                //   instagram: '',
-                //   twitter: '',
-                //   webSite: '',
-                //   // address: walletaddress.toLowerCase()
-                //   address: '0x670fb183424BD45f4D84161f774cc1b82e504288'.toLowerCase()
-                // }
-                //
-                // const sendData = {
-                //   expertId: '3333',
-                //   info: info
-                // }
-
-                //dispatch(sendExpert({sendData, file}))
 
                 if (!expertId) {  // эксперт создает профиль и регистрируется на блокчейне
                   registerAsExp()  // верни потом

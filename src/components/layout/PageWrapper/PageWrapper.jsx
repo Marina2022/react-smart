@@ -16,7 +16,7 @@ import {
 import {useWaitForTransaction,} from 'wagmi'
 import {useEffect, useState} from "react";
 import {
-  selectConnectIsShown, selectIsUserRegistered,
+  selectConnectIsShown, selectExperts, selectIsUserRegistered, selectWallet,
   setConnectIsShown,
   setIsUserRegistered,
   setWallet
@@ -38,6 +38,7 @@ const PageWrapper = () => {
   const dispatch = useDispatch()
 
   const {switchNetwork} = useSwitchNetwork()
+
 
   const {config: registerConfig, error: errRegister} = usePrepareContractWrite({
     address: CONTRACT_ADDRESS,
@@ -86,24 +87,28 @@ const PageWrapper = () => {
     },
   })
 
-  useEffect(() => {
-    if (isConnected) {
-      if (switchNetwork) switchNetwork(80001)
-      if (isRegistered) isRegistered()  // вызываем функцию (если хук useContractRead успел отработать и функция есть)
+  const experts = useSelector(selectExperts)
+  const wallet = useSelector(selectWallet)
 
-      if (nativeBalance) {  // почему-то ошибка вылетает иногда, что data - undefined.
-        dispatch(setWallet({
-          number: address,
-          balance: ethers.formatUnits(nativeBalance.value, nativeBalance.decimals).slice(0, -15),
-          USDT_balance: ethers.formatUnits((BigInt(usdtBalance)), 18).slice(0, -15),
-        }))
+  useEffect(() => {
+      if (isConnected) {
+        if (switchNetwork) switchNetwork(80001)
+        if (isRegistered) isRegistered()  // вызываем функцию (если хук useContractRead успел отработать и функция есть)
+
+        if (nativeBalance) {  // почему-то ошибка вылетает иногда, что data - undefined.
+          dispatch(setWallet({
+            number: address,
+            balance: ethers.formatUnits(nativeBalance.value, nativeBalance.decimals).slice(0, -15),
+            USDT_balance: ethers.formatUnits((BigInt(usdtBalance)), 18).slice(0, -15),
+          }))
+        }
+        if (connectModalIsShown) {
+          dispatch(setConnectIsShown(false));
+          //navigate('/role')
+        }
       }
-      if (connectModalIsShown) {
-        dispatch(setConnectIsShown(false));
-        navigate('role')
-      }
-    }
-  }, [isConnected, nativeBalance])
+    }, [isConnected, nativeBalance]
+  )
 
   return (
     <>
@@ -127,7 +132,8 @@ const PageWrapper = () => {
         <Route path={'/edit'} element={<EditExpertProfile/>}/>
         <Route path={'/expertProfile/:id'} element={<ExpertProfile/>}/>
         <Route path={'/profile'} element={<UserProfile/>}/>
-        <Route path={'*'} element={<div style={{'textAlign': 'center', 'marginTop': 100}}>Страница не найдена</div>}/>
+        <Route path={'*'}
+               element={<div style={{'textAlign': 'center', 'marginTop': 100}}>Страница не найдена</div>}/>
       </Routes>
     </>
   )

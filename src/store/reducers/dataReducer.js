@@ -2,8 +2,6 @@ import {createAsyncThunk, createSelector, createSlice} from '@reduxjs/toolkit'
 import {api} from '../../index'
 import {APIRoutes} from '../../consts'
 import history from "../../browserHistory";
-import mockExperts from "../../mocks/mockExperts";
-import {toast} from "react-toastify";
 
 export const fetchExperts = createAsyncThunk('data/fetchExperts',
   async () => {
@@ -14,10 +12,7 @@ export const fetchExperts = createAsyncThunk('data/fetchExperts',
         }
       }
     );
-
-    console.log(data.data.data)
     return data.data.data
-    //return mockExperts;
   })
 
 
@@ -30,7 +25,6 @@ export const fetchOtherData = createAsyncThunk('data/fetchOtherData',
         }
       }
     );
-    // console.log(data.data)
     return data.data;
   })
 
@@ -96,6 +90,21 @@ const dataReducer = createSlice({
     },
     setConnectIsShown: (state, action) => {
       state.connectIsShown = action.payload
+
+      if (action.payload === false) {
+      let isExpert = false
+      state.experts.forEach((expert) => {
+        if (state.wallet) {
+          if (expert.address === state.wallet.number.toLowerCase()) {
+            state.currentExpertId = expert.id
+            state.role = 'expert'
+            isExpert = true
+          }
+        }
+      })
+        if (!isExpert) history.push('/role')
+      }
+
     },
 
     setWalletType: (state, action) => {
@@ -147,7 +156,7 @@ const dataReducer = createSlice({
 
     })
     .addCase(fetchExperts.rejected, (state, action) => {
-      console.log('experts fetching error ')
+      console.log('experts fetching error')
       state.isLoading = false
     })
 
@@ -163,7 +172,6 @@ const dataReducer = createSlice({
     .addCase(sendExpert.rejected, (state, action) => {
       console.log('expert uploading error ')
       state.formIsSubmitting = false
-      toast.error('expert uploading error')
     })
     .addCase(fetchOneExpert.pending, (state, action) => {
       state.isOneExpertLoading = true;

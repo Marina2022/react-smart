@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 import {selectDonateInputValue} from "../../store/reducers/dataReducer";
 import {useContractWrite} from "wagmi";
 import {CONTRACT_ADDRESS, USDT_abi, USDT_ADDRESS} from "../../consts";
+import {toast} from "react-toastify";
 
 const ApprovePaymentBtn = ({step, setStep, expertId}) => {
 
@@ -20,6 +21,9 @@ const ApprovePaymentBtn = ({step, setStep, expertId}) => {
     args: [CONTRACT_ADDRESS, donateInputValue * 10 ** 18], // donateInputValue - сумма которую пользователь в инпут ввел
     onSuccess(data) {
       setStep(2)    // т.е. перейдет на след. шаг, если аппрув удался
+    },
+    onError(error) {
+      console.log(error)
     }
   })
 
