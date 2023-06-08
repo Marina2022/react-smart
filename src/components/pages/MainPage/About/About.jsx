@@ -14,9 +14,9 @@ const About = () => {
   let sumOfDonates = 0
 
     experts.forEach((oneExpert)=>{
-      contributors += oneExpert.donates.length  //
-      const donatesSum = oneExpert.donates.reduce((sum, elem) => {
-        return sum + +elem._revardsAmount
+      contributors += oneExpert.events.donates.length  //
+      const donatesSum = oneExpert.events.donates.reduce((sum, elem) => {
+        return sum + +(elem._revardsAmount/10**18).toFixed(2)
       }, 0)
       sumOfDonates += donatesSum
     })

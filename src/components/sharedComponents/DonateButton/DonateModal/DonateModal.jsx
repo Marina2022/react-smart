@@ -56,7 +56,7 @@ const DonateModal = ({expert, isDonateModalShown, setIsDonateModalShown, bonus, 
           (step === 1 || step === 2) && <div className={s.steps_1_2}>
 
             <h1 className={s.title}>Payment Confirmation</h1>
-            <p className={s.youVote}>You vote for {expert.expert.name + ' ' + expert.expert.position}</p>
+            <p className={s.youVote}>You vote for {expert.name + ' ' + expert.position}</p>
             <div className={s.youPay}>
               <span>You pay</span>
               <input onChange={onPayInputChange} type="text" placeholder="$" className={s.payInput}
@@ -73,8 +73,8 @@ const DonateModal = ({expert, isDonateModalShown, setIsDonateModalShown, bonus, 
               <div className={s.bonusWrapper}><span>${wallet.USDT_balance === '' ? '0' : wallet.USDT_balance}</span></div>
             </div>
             <div className={s.buttonWrapper}>
-              <ApprovePaymentBtn step={step} setStep={setStep} expertId={expert.expert.id}/>
-              <ConfirmPaymentBtn step={step} setStep={setStep} expertId={expert.expert.id} setIsExpertVoted={setIsExpertVoted}/>
+              <ApprovePaymentBtn step={step} setStep={setStep} expertId={expert.id}/>
+              <ConfirmPaymentBtn step={step} setStep={setStep} expertId={expert.id} setIsExpertVoted={setIsExpertVoted}/>
             </div>
 
             <div className={s.progress}>

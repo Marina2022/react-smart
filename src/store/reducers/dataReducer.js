@@ -14,8 +14,10 @@ export const fetchExperts = createAsyncThunk('data/fetchExperts',
         }
       }
     );
-    //return data.data.data;
-    return mockExperts;
+
+    console.log(data.data.data)
+    return data.data.data
+    //return mockExperts;
   })
 
 
@@ -134,16 +136,15 @@ const dataReducer = createSlice({
       // авторизация для эксперта, который раньше уже регистрировался
       experts.forEach((expert) => {
         if (state.wallet) {
-          if (expert.expert.address === state.wallet.number) {
-            state.currentExpertId = expert.expert.id
+          if (expert.address === state.wallet.number.toLowerCase()) {
+            state.currentExpertId = expert.id
             state.role = 'expert'
           }
         }
       })
-
       state.experts = experts
       state.isLoading = false
-//      console.log(experts)
+
     })
     .addCase(fetchExperts.rejected, (state, action) => {
       console.log('experts fetching error ')

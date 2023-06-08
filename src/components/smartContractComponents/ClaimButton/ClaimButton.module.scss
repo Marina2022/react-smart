@@ -13,7 +13,7 @@
   align-items: center;
   margin-top: 40px;
   margin-bottom: 16px;
-  margin-left: auto;
+  margin-left: 40px;
   pointer-events: none;
 
   &:disabled {
@@ -45,6 +45,5 @@
 }
 
 .buttonWrapper {
-  position: relative;
-
+  //position: relative;
 }

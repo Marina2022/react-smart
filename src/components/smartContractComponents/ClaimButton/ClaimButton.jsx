@@ -1,8 +1,11 @@
 import s from './ClaimButton.module.scss';
-import cn from "classnames";
 import {useState} from "react";
+import {useSelector} from "react-redux";
+import {selectExperts, selectRound} from "../../../store/reducers/dataReducer";
+
 
 const ClaimButton = () => {
+  const round = useSelector(selectRound)
 
   const showTooltip = () => {
     setIsTooltipShown(true);
@@ -21,7 +24,7 @@ const ClaimButton = () => {
          onMouseLeave={() => hideTooltip()}
          className={s.buttonWrapper}
     >
-      <button className={s.claimBtn} disabled>Claim</button>
+      <button className={s.claimBtn} disabled={round.status !==2}>Claim</button>
       {
         isTooltipShown && <div className={s.tooltip}>You can collect donates after voting ends</div>
       }

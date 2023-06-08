@@ -8,7 +8,7 @@ const ExpertList = () => {
   const experts = useSelector(selectExperts);
 
   const globalDonatesNumber = experts.reduce((sum, elem) => {
-    return sum + elem.donates.length
+    return sum + elem.events.donates.length
   }, 0)
 
   return (

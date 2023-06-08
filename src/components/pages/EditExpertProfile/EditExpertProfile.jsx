@@ -93,7 +93,7 @@ const EditExpertProfile = () => {
     instagram: '',
     twitter: '',
     webSite: '',
-    address: walletaddress
+    address: walletaddress.toLowerCase()
   })
 
   const {
@@ -146,8 +146,30 @@ const EditExpertProfile = () => {
               }}
 
               onSubmit={(values) => {
+
+                // const info = {
+                //   name: 'John',
+                //   position: 'Doe',
+                //   experience: 'In other existing market domains, such as healthcare, finance, logistics, and supply chain, a Blockchain specialist is responsible for designing and implementing ',
+                //   learnDescription: 'In the logistics and supply chain sector',
+                //   telegram: 'tg',
+                //   instagram: '',
+                //   twitter: '',
+                //   webSite: '',
+                //   // address: walletaddress.toLowerCase()
+                //   address: '0x670fb183424BD45f4D84161f774cc1b82e504288'.toLowerCase()
+                // }
+                //
+                // const sendData = {
+                //   expertId: '3333',
+                //   info: info
+                // }
+
+                //dispatch(sendExpert({sendData, file}))
+
                 if (!expertId) {  // эксперт создает профиль и регистрируется на блокчейне
-                  registerAsExp()
+                  registerAsExp()  // верни потом
+
                 } else {  // эксперт редактирует профиль  (регистрация уже не нужна)
                   const sendData = {
                     expertId: expertId,

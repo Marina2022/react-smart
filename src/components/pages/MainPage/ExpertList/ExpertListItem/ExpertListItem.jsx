@@ -6,13 +6,13 @@ import ExpertInfoModal from "./ExpertInfoModal/ExpertInfoModal";
 import {PRIZE_FUND} from "../../../../../consts";
 
 const ExpertListItem = ({expert, number, globalDonatesNumber}) => {
-  const contributors = expert.donates.length
-  const donations = expert.donates.reduce((sum, elem) => {
-    return sum + +elem._revardsAmount
+  const contributors = expert.events.donates.length
+  const donations = expert.events.donates.reduce((sum, elem) => {
+    return +sum + +(elem._revardsAmount/10**18).toFixed(2)
   }, 0)
 
-  const avatar = expert.expert.image ? expert.expert.image : defaultAva;
-  const bonus = (PRIZE_FUND * expert.donates.length /  globalDonatesNumber).toFixed(1) + 'k'
+  const avatar = expert.image ? expert.image : defaultAva;
+  const bonus = (PRIZE_FUND * expert.events.donates.length /  globalDonatesNumber).toFixed(1) + 'k'
   const [isExpertModalActive, setExpertModalActive] = useState(false);
 
   return (
@@ -21,7 +21,7 @@ const ExpertListItem = ({expert, number, globalDonatesNumber}) => {
       <div className={s.cellName} onClick={() => setExpertModalActive(true)}>
         <img src={avatar} alt="avatar" className={s.expertsAva}/>
         <a className={s.cellLink}>
-          {expert.expert.name} {expert.expert.position}
+          {expert.name} {expert.position}
         </a>
       </div>
       <div className={s.cellContributors}>{contributors}</div>

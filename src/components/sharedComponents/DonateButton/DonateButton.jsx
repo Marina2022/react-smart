@@ -21,7 +21,7 @@ const DonateButton = ({expert, classname, bonus}) => {
   let isVoted = false
 
   if (wallet) {
-    isVoted = expert.donates.find((donate) => {  // проверка - голосовал ли текущий пользователь за этого эксперта раньше
+    isVoted = expert.events.donates.find((donate) => {  // проверка - голосовал ли текущий пользователь за этого эксперта раньше
       return donate._sender === wallet.number
     })
   }

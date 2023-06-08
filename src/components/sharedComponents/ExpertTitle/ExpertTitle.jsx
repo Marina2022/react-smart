@@ -24,8 +24,8 @@ const ExpertTitle = ({expert}) => {
         </li>
 
         <li>
-          <a href={expert.instagram}>
-            <img src={web} alt="instagram icon"/>
+          <a href={expert.webSite}>
+            <img src={web} alt="web icon"/>
           </a>
         </li>
 

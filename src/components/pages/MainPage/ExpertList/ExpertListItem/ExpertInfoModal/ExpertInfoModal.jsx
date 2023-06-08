@@ -31,11 +31,11 @@ const ExpertInfoModal = ({isExpertModalActive, setExpertModalActive, expert, ava
         <div className={s.header}>
           <div className={s.mainInfo}>
             <img src={avatar} alt="avatar" className={s.avatar}/>
-            <ExpertTitle expert={expert.expert}/>
+            <ExpertTitle expert={expert}/>
           </div>
-          <ShareProfile expertId={expert.expert.id} classname={s.modal__shareProfile} />
+          <ShareProfile expertId={expert.id} classname={s.modal__shareProfile} />
         </div>
-        <ExpertText expert={expert.expert} />
+        <ExpertText expert={expert} />
         <ExpertDonations classname={s.expertInfoModal__Text} donations={donations} bonus={bonus}/>
         <DonateButton classname={s.expertInfoModal__donateBtn} expert={expert} bonus={bonus} />
       </div>

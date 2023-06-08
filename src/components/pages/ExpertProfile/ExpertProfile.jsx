@@ -37,32 +37,38 @@ const ExpertProfile = () => {
 
   const wallet = useSelector(selectWallet)
   const experts = useSelector(selectExperts)
+  console.log(experts)
 
   let donations = 0
   let bonus = 0
 
   let expertInfo = null
   if (wallet) {
+
+
      expertInfo = experts.find((expert) => {
-      return expert.expert.address === wallet.number
+       console.log(expert.address)
+      return expert.address === wallet.number.toLowerCase()
     })
 
+    console.log(expertInfo)
+
+
     if (expertInfo) {  // если эксперт в списке экспертов уже есть, то можно посчитать его donations и QF bonus
-      donations = expertInfo.donates.reduce((sum, elem) => {
-        return sum + +elem._revardsAmount
+      donations = expertInfo.events.donates.reduce((sum, elem) => {
+        return sum + +(elem._revardsAmount/10**18).toFixed(2)
       }, 0)
 
       const globalDonatesNumber = experts.reduce((sum, elem) => {
-        return sum + elem.donates.length
+        return sum + elem.events.donates.length
       }, 0)
 
-      bonus = (PRIZE_FUND * expertInfo.donates.length / globalDonatesNumber).toFixed(1) + 'k'
+      bonus = (PRIZE_FUND * expertInfo.events.donates.length / globalDonatesNumber).toFixed(1) + 'k'
     }
   }
 
   if (isCurrentExpertLoading) return <div style={{'textAlign': 'center', 'padding': 50}}><RotatingLines
     strokeColor="#4481c3"/></div>
-
 
   return (
     currentExpert && <div>
