@@ -156,7 +156,7 @@ const EditExpertProfile = () => {
               onSubmit={(values) => {
 
                 if (!expertId) {  // эксперт создает профиль и регистрируется на блокчейне
-                  registerAsExp()  // верни потом
+                  registerAsExp()
 
                 } else {  // эксперт редактирует профиль  (регистрация уже не нужна)
                   const sendData = {

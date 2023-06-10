@@ -46,8 +46,6 @@ const ExpertProfile = () => {
 
   let expertInfo = null
   if (wallet) {
-
-
      expertInfo = experts.find((expert) => {
       return expert.id === +paramsId
     })

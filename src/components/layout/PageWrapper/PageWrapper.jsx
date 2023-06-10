@@ -50,7 +50,6 @@ const PageWrapper = () => {
   const waitForTransaction = useWaitForTransaction({
     hash: regData?.hash,
     onSuccess(data) {
-      console.log('теперь ты зареган') //готово, должно работать
       dispatch(setIsUserRegistered(true)) //кнопочка исчезает
     },
     onError(error) {
@@ -69,7 +68,6 @@ const PageWrapper = () => {
       console.log('Ошибка', error)
     },
     onSuccess(data) {
-      console.log('Юзер зареган:', data)
       dispatch(setIsUserRegistered(data))
     },
   })
@@ -87,24 +85,21 @@ const PageWrapper = () => {
     },
   })
 
-  const experts = useSelector(selectExperts)
-  const wallet = useSelector(selectWallet)
-
   useEffect(() => {
       if (isConnected) {
         if (switchNetwork) switchNetwork(80001)
         if (isRegistered) isRegistered()  // вызываем функцию (если хук useContractRead успел отработать и функция есть)
 
+
         if (nativeBalance) {  // почему-то ошибка вылетает иногда, что data - undefined.
           dispatch(setWallet({
             number: address,
             balance: ethers.formatUnits(nativeBalance.value, nativeBalance.decimals).slice(0, -15),
-            USDT_balance: ethers.formatUnits((BigInt(usdtBalance)), 18).slice(0, -15),
+            USDT_balance: ethers.formatUnits(Number(usdtBalance), 18).slice(0, -15),
           }))
         }
         if (connectModalIsShown) {
           dispatch(setConnectIsShown(false));
-          //navigate('/role')
         }
       }
     }, [isConnected, nativeBalance]
