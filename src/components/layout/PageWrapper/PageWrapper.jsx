@@ -90,12 +90,12 @@ const PageWrapper = () => {
         if (switchNetwork) switchNetwork(80001)
         if (isRegistered) isRegistered()  // вызываем функцию (если хук useContractRead успел отработать и функция есть)
 
+        if (nativeBalance && typeof usdtBalance !== "undefined") {  // почему-то ошибка вылетает иногда, что data - undefined.
 
-        if (nativeBalance) {  // почему-то ошибка вылетает иногда, что data - undefined.
           dispatch(setWallet({
             number: address,
             balance: ethers.formatUnits(nativeBalance.value, nativeBalance.decimals).slice(0, -15),
-            USDT_balance: ethers.formatUnits(Number(usdtBalance), 18).slice(0, -15),
+            USDT_balance: ethers.formatUnits(usdtBalance,18)//.slice(0, -11),
           }))
         }
         if (connectModalIsShown) {
