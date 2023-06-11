@@ -32,7 +32,7 @@
 .walletWrapper {
   display: flex;
   justify-content: space-between;
-  align-items: start;
+  align-items: flex-start;
   margin-bottom: 40px;
 }
 
@@ -77,7 +77,7 @@
 .bottomWrapper {
   display: flex;
   justify-content: space-between;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .withDraw {
